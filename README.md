@@ -7,8 +7,13 @@ A dungeon game where you can kill monsters on a floor, open chests, get xp, and 
 
 Features to be added(in no particular order):
 -GUI
+
 -monsters
+
 -level system
+
 -weapons
+
 -armor
+
 -hopefully some balancing
