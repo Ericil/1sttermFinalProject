@@ -1,4 +1,4 @@
-1sttermFinalProject
+1stTermFinalProject
 ===================
 
 v0.0 1/5/14
