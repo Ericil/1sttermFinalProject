@@ -15,7 +15,7 @@ void draw(){
   wrapping();
   rect(xvaluerect, yvaluerect, 50, 50);
   ellipse(xvaluecircle, yvaluecircle, 50, 50);
-  if (xvaluerect == xvaluecircle && yvaluerect == yvaluecircle){
+  if ((xvaluerect - xvaluecircle < 50 && xvaluerect - xvaluecircle > -100) && (yvaluerect - yvaluecircle < 50 && yvaluerect - yvaluecircle > -100)){
     fill(600, 0, 0);
     ellipse(xvaluecircle, yvaluecircle, 50, 50);
   }
