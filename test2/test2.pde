@@ -34,14 +34,14 @@ void wrapping(){
     yvaluerect = 600;
   }
 }
-void keyPressed(){
-  if (key == 119){
-    yvaluerect -= 25;  
-  }else if(key == 97){
+void keyPressed() {
+  if (key == 119 || key == 87) {
+    yvaluerect -= 25;
+  } else if (key == 97 || key == 65) {
     xvaluerect -= 25;
-  }else if (key == 115){
+  } else if (key == 115 || key == 83) {
     yvaluerect += 25;
-  }else if (key == 100){
+  } else if (key == 100 || key == 68) {
     xvaluerect += 25;
   }
 }
