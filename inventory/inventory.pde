@@ -1,20 +1,30 @@
-float bx = 40;
-float by = 40;
-int bs = 20;
+float itemx = 40;
+float itemy = 40;
+int bs = 25;
 boolean over = false;
 boolean locked = false;
 float bdifx = 0.0; 
 float bdify = 0.0; 
-
+float armorx = 500;
+float armory = 500;
 void setup() {
   size(600, 600);
-  rectMode(RADIUS);  
+  rectMode(RADIUS); 
 }
 
-void draw() { 
+void draw() {
+  stroke(0);
+  fill(100, 200, 100);
   background(0);
+  rect(0, height/4 * 3, width, height/4);
+  fill(204, 102, 0);
+  rect(armorx, armory, 25, 25);
+  if (itemx - armorx < 10 && itemx - armorx > -10){
+    itemx = armorx;
+    itemy = armory;
+  }
   // Test if the cursor is over the box 
-  if (mouseX > bx-bs && mouseX < bx+bs && mouseY > by-bs && mouseY < by+bs) {
+  if (mouseX > itemx-bs && mouseX < itemx+bs && mouseY > itemy-bs && mouseY < itemy+bs) {
     over = true;  
     if(!locked) { 
       stroke(255); 
@@ -26,7 +36,7 @@ void draw() {
     over = false;
   }
   // Draw the box
-  rect(bx, by, bs, bs);
+  rect(itemx, itemy, bs, bs);
 }
 
 void mousePressed() {
@@ -36,14 +46,14 @@ void mousePressed() {
   } else {
     locked = false;
   }
-  bdifx = mouseX-bx; 
-  bdify = mouseY-by; 
+  bdifx = mouseX-itemx; 
+  bdify = mouseY-itemy; 
 }
 
 void mouseDragged() {
   if(locked) {
-    bx = mouseX-bdifx; 
-    by = mouseY-bdify; 
+    itemx = mouseX-bdifx; 
+    itemy = mouseY-bdify; 
   }
 }
 
