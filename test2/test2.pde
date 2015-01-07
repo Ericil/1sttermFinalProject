@@ -2,11 +2,10 @@ void setup (){
   size(600, 600);
     background(50);
     rect(100, 100, 50, 50);
-    img = loadImage("testmap.jpg");
 }
 int value = 0;
 int xvaluerect = 100;
-int yvaluerect = 100;
+int yvaluerect = 0;
 int xvaluecircle = 300;
 int yvaluecircle = 300;
 void draw(){
@@ -14,11 +13,15 @@ void draw(){
   background(value);
   fill(255);
   wrapping();
+  PImage img;
+  img = loadImage("testmap.jpg");
+  image(img, 0, 0);
   rect(xvaluerect, yvaluerect, 50, 50);
   ellipse(xvaluecircle, yvaluecircle, 50, 50);
   if ((xvaluerect - xvaluecircle < 50 && xvaluerect - xvaluecircle > -100) && (yvaluerect - yvaluecircle < 50 && yvaluerect - yvaluecircle > -100)){
     fill(600, 0, 0);
     ellipse(xvaluecircle, yvaluecircle, 50, 50);
+  
   }
     
     
@@ -37,12 +40,12 @@ void wrapping(){
 }
 void keyPressed() {
   if (key == 119 || key == 87) {
-    yvaluerect -= 25;
+    yvaluerect -= 50;
   } else if (key == 97 || key == 65) {
-    xvaluerect -= 25;
+    xvaluerect -= 50;
   } else if (key == 115 || key == 83) {
-    yvaluerect += 25;
+    yvaluerect += 50;
   } else if (key == 100 || key == 68) {
-    xvaluerect += 25;
+    xvaluerect += 50;
   }
 }
