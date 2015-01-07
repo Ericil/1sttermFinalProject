@@ -5,7 +5,7 @@ void setup (){
 }
 int value = 0;
 int xvaluerect = 100;
-int yvaluerect = 0;
+int yvaluerect = 50;
 int xvaluecircle = 300;
 int yvaluecircle = 300;
 void draw(){
@@ -39,8 +39,9 @@ void wrapping(){
   }
 }
 void keyPressed() {
-  if (key == 119 || key == 87) {
-    yvaluerect -= 50;
+  color d = get(xvaluerect,yvaluerect-25);
+  if (key == 119 || key == 87 && d == 0) {
+       yvaluerect -= 50;
   } else if (key == 97 || key == 65) {
     xvaluerect -= 50;
   } else if (key == 115 || key == 83) {
