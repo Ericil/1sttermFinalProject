@@ -1,6 +1,7 @@
+ItemClass anitem;
 float itemx = 40;
 float itemy = 40;
-int bs = 25;
+int bs = 20;
 boolean over = false;
 boolean locked = false;
 float bdifx = 0.0; 
@@ -16,6 +17,7 @@ float weapony = 170;
 void setup() {
   size(600, 600);
   rectMode(RADIUS); 
+  anitem = new ItemClass();
 }
 
 void draw() {
@@ -32,6 +34,18 @@ void draw() {
     itemx = helmetx;
     itemy = helmety;
   }
+  if (itemx - chestx < 20 && itemx - chestx > -20 && itemy - chesty < 20 && itemy - chesty > -20){
+    itemx = chestx;
+    itemy = chesty;
+  }
+  if (itemx - bootsx < 20 && itemx - bootsx > -20 && itemy - bootsy < 20 && itemy - bootsy > -20){
+    itemx = bootsx;
+    itemy = bootsy;
+  }
+  if (itemx - weaponx < 20 && itemx - weaponx > -20 && itemy - weapony < 20 && itemy - weapony > -20){
+    itemx = weaponx;
+    itemy = weapony;
+  }
   // Test if the cursor is over the box 
   if (mouseX > itemx-bs && mouseX < itemx+bs && mouseY > itemy-bs && mouseY < itemy+bs) {
     over = true;  
@@ -46,6 +60,7 @@ void draw() {
   }
   // Draw the box
   rect(itemx, itemy, bs, bs);
+  anitem.generate();
 }
 
 void mousePressed() {
