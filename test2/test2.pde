@@ -12,15 +12,14 @@ color w = 0;
 color a = 0;
 color s = 0;
 color d = 0;
+PImage player;
 void draw(){
   //stop disappearing
-  background(value);
-  fill(255);
-  wrapping();
-  PImage img;
+        PImage img;
   img = loadImage("testmap.jpg");
-  image(img, 0, 0);
-  rect(xvaluerect, yvaluerect, 50, 50);
+  image(img, 0, 0); 
+  player = loadImage("player.jpg");
+  image(player, xvaluerect-25, yvaluerect-25);
   rectMode(CENTER);
   w = get(xvaluerect,yvaluerect-50);
   a = get(xvaluerect-50,yvaluerect);
@@ -45,13 +44,25 @@ void wrapping(){
   }
 }
 void keyPressed() {
-  if (w == -1 && key == 119 || key == 87) {
+    if (w == -1 && key == 119 || key == 87) {
        yvaluerect -= 50; //up
+       PImage up;
+    up = loadImage("up.jpg");
+    player = up;
   } else if (a == -1 && key == 97 || key == 65) {
     xvaluerect -= 50;//left
+    PImage left;
+    left = loadImage("left.jpg");
+    player = left;
   } else if (s == -1 && key == 115 || key == 83) {
     yvaluerect += 50;//down
+    PImage down;
+    down = loadImage("down.jpg");
+    player = down;
   } else if (d == -1 && key == 100 || key == 68) {
     xvaluerect += 50;//right
+    PImage right;
+    right = loadImage("right.jpg");
+    player = right;
   }
 }
