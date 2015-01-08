@@ -4,10 +4,14 @@ void setup (){
     rect(100, 100, 50, 50);
 }
 int value = 0;
-int xvaluerect = 100;
-int yvaluerect = 50;
+int xvaluerect = 125;
+int yvaluerect = 75;
 int xvaluecircle = 300;
 int yvaluecircle = 300;
+color w = 0;
+color a = 0;
+color s = 0;
+color d = 0;
 void draw(){
   //stop disappearing
   background(value);
@@ -17,14 +21,16 @@ void draw(){
   img = loadImage("testmap.jpg");
   image(img, 0, 0);
   rect(xvaluerect, yvaluerect, 50, 50);
+  rectMode(CENTER);
+  w = get(xvaluerect,yvaluerect-50);
+  a = get(xvaluerect-50,yvaluerect);
+  s = get(xvaluerect,yvaluerect+50);
+  d = get(xvaluerect+50,yvaluerect);  
   ellipse(xvaluecircle, yvaluecircle, 50, 50);
   if ((xvaluerect - xvaluecircle < 50 && xvaluerect - xvaluecircle > -100) && (yvaluerect - yvaluecircle < 50 && yvaluerect - yvaluecircle > -100)){
     fill(600, 0, 0);
     ellipse(xvaluecircle, yvaluecircle, 50, 50);
-  
   }
-    
-    
 }
 void wrapping(){
     if (xvaluerect > 600){
@@ -39,14 +45,13 @@ void wrapping(){
   }
 }
 void keyPressed() {
-  color d = get(xvaluerect,yvaluerect-25);
-  if (key == 119 || key == 87 && d == 0) {
-       yvaluerect -= 50;
-  } else if (key == 97 || key == 65) {
-    xvaluerect -= 50;
-  } else if (key == 115 || key == 83) {
-    yvaluerect += 50;
-  } else if (key == 100 || key == 68) {
-    xvaluerect += 50;
+  if (w == -1 && key == 119 || key == 87) {
+       yvaluerect -= 50; //up
+  } else if (a == -1 && key == 97 || key == 65) {
+    xvaluerect -= 50;//left
+  } else if (s == -1 && key == 115 || key == 83) {
+    yvaluerect += 50;//down
+  } else if (d == -1 && key == 100 || key == 68) {
+    xvaluerect += 50;//right
   }
 }
