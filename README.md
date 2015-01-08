@@ -1,5 +1,10 @@
 1stTermFinalProject
 ===================
+v.02 1/8/15
+Updates:
+-Added movement models(testing)    
+-Added collision with walls    
+-inventory starting getting set up    
 v0.1 1/7/15    
 Updates:    
 -Added a basic map    
