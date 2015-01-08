@@ -5,8 +5,14 @@ boolean over = false;
 boolean locked = false;
 float bdifx = 0.0; 
 float bdify = 0.0; 
-float armorx = 500;
-float armory = 500;
+float helmetx = 500;
+float helmety = 100;
+float chestx = 500;
+float chesty = 170;
+float bootsx = 500;
+float bootsy = 240;
+float weaponx = 430;
+float weapony = 170;
 void setup() {
   size(600, 600);
   rectMode(RADIUS); 
@@ -14,14 +20,17 @@ void setup() {
 
 void draw() {
   stroke(0);
-  fill(100, 200, 100);
+  fill(200, 200, 100);
   background(0);
   rect(0, height/4 * 3, width, height/4);
-  fill(204, 102, 0);
-  rect(armorx, armory, 25, 25);
-  if (itemx - armorx < 10 && itemx - armorx > -10){
-    itemx = armorx;
-    itemy = armory;
+  fill(204, 202, 0);
+  rect(helmetx, helmety, 25, 25);
+  rect(chestx, chesty, 25, 25);
+  rect(bootsx, bootsy, 25, 25);
+  rect(weaponx, weapony, 25, 25);
+  if (itemx - helmetx < 20 && itemx - helmetx > -20 && itemy - helmety < 20 && itemy - helmety > -20){
+    itemx = helmetx;
+    itemy = helmety;
   }
   // Test if the cursor is over the box 
   if (mouseX > itemx-bs && mouseX < itemx+bs && mouseY > itemy-bs && mouseY < itemy+bs) {
