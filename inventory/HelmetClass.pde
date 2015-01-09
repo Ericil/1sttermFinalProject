@@ -1,0 +1,3 @@
+class HelmetClass extends ItemClass {
+}
+

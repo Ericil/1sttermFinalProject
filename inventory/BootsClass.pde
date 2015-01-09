@@ -1,0 +1,3 @@
+class BootsClass extends ItemClass{
+}
+

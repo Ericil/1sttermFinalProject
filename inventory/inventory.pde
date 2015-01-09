@@ -1,7 +1,10 @@
-ItemClass anitem;
-float itemx = 40;
-float itemy = 40;
-int bs = 20;
+import java.io.*;
+import java.util.*;
+
+int[] data;// data[0] = helmet, data[1] = armor, data[2] = boots, data[3] = weapon
+float itemx;
+float itemy;
+float itemsize;
 boolean over = false;
 boolean locked = false;
 float bdifx = 0.0; 
@@ -14,10 +17,16 @@ float bootsx = 500;
 float bootsy = 240;
 float weaponx = 430;
 float weapony = 170;
+ItemClass[] stuff;
 void setup() {
+  stuff = new ItemClass[10];
+  data = new int[4];
+  print(data[0]);
   size(600, 600);
-  rectMode(RADIUS); 
-  anitem = new ItemClass();
+  rectMode(RADIUS);
+  stuff[0] = new ItemClass();
+  data[0] = 1;
+  loadallitems();
 }
 
 void draw() {
@@ -47,7 +56,7 @@ void draw() {
     itemy = weapony;
   }
   // Test if the cursor is over the box 
-  if (mouseX > itemx-bs && mouseX < itemx+bs && mouseY > itemy-bs && mouseY < itemy+bs) {
+  if (mouseX > itemx-itemsize && mouseX < itemx+itemsize && mouseY > itemy-itemsize && mouseY < itemy+itemsize) {
     over = true;  
     if(!locked) { 
       stroke(255); 
@@ -59,8 +68,8 @@ void draw() {
     over = false;
   }
   // Draw the box
-  rect(itemx, itemy, bs, bs);
-  anitem.generate();
+  rect(itemx, itemy, itemsize, itemsize);
+  stuff[0].generate();
 }
 
 void mousePressed() {
@@ -84,4 +93,19 @@ void mouseDragged() {
 void mouseReleased() {
   locked = false;
 }
-
+void loadallitems(){
+  if (data[0] != 0){
+    print("\nthere are items");
+    try{
+      File thefile = new File("thehelmet.txt");
+      Scanner run = new Scanner(thefile);
+      while(run.hasNextLine()){
+        print(run.next());
+      }
+    }catch(FileNotFoundException ugh){
+      print("\nfile not found");
+    }
+  }
+    
+}
+  

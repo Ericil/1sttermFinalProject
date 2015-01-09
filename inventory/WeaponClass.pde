@@ -1,0 +1,3 @@
+class WeaponClass extends ItemClass{
+}
+
