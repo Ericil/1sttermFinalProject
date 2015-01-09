@@ -1,10 +1,18 @@
 1stTermFinalProject
 ===================
+v.03 1/9/15    
+Updates:    
+-completed movement models    
+-collision with walls complete    
+-started hero/monster interaction    
+-created different armors/weapon classes for inventory, wrote for them too    
+
 v.02 1/8/15    
 Updates:    
 -Added movement models(testing)    
 -Added collision with walls    
 -inventory starting getting set up    
+
 v0.1 1/7/15    
 Updates:    
 -Added a basic map    
