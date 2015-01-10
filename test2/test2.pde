@@ -13,7 +13,7 @@ color a = 0;
 color s = 0;
 color d = 0;
 PImage player;
-Mob m = new Mob(200,125);
+Mob m = new Mob(200.0, 125.0);
 void draw() {
   PImage img;
   img = loadImage("testmap.jpg");
@@ -24,9 +24,7 @@ void draw() {
   a = get(xvaluerect-50, yvaluerect);
   s = get(xvaluerect, yvaluerect+50);
   d = get(xvaluerect+50, yvaluerect);
-  Mob m = new Mob(200,125);
-  print(X);
-  
+  Mob m = new Mob(200.0, 125.0);
 }
 void wrapping() {
   if (xvaluerect > 600) {
@@ -42,40 +40,37 @@ void wrapping() {
 }
 void keyPressed() {
   if (key == 119 || key == 87) {
-    PImage up;
-    up = loadImage("up.jpg");
-    player = up;
     if (w == -1) {
       yvaluerect -= 50; //up
       w = get(xvaluerect, yvaluerect-50);
     }
-  } 
-  if (key == 97 || key == 65) {
-    PImage left;
-    left = loadImage("left.jpg");
-    player = left;    
+    PImage up;
+    up = loadImage("up.jpg");
+    player = up;
+  } else if (key == 97 || key == 65) {  
     if (a == -1 ) {
       xvaluerect -= 50;//left
       a = get(xvaluerect-50, yvaluerect);
     }
-  }
-  if (key == 115 || key == 83) {    
-    PImage down;
-    down = loadImage("down.jpg");
-    player = down;
+    PImage left;
+    left = loadImage("left.jpg");
+    player = left;
+  } else if (key == 115 || key == 83) {    
     if (s == -1) {    
       yvaluerect += 50;//down
       s = get(xvaluerect, yvaluerect+50);
     }
-  } 
-  if (key == 100 || key == 68) {
-    PImage right;
-    right = loadImage("right.jpg");
-    player = right;
+    PImage down;
+    down = loadImage("down.jpg");
+    player = down;
+  } else if (key == 100 || key == 68) {
     if (d == -1) {
       xvaluerect += 50;//right
       d = get(xvaluerect+50, yvaluerect);
     }
+    PImage right;
+    right = loadImage("right.jpg");
+    player = right;
   }
 }
 
