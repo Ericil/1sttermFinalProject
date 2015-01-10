@@ -1,6 +1,6 @@
 class Mob {
-  float X;
-  float Y;
+  float X = 50;
+  float Y = 50;
   public float getX() {
     return X;
   }
