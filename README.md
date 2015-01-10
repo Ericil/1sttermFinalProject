@@ -1,5 +1,10 @@
 1stTermFinalProject
-===================
+===================    
+v.03.1 1/10/15    
+Bugs:    
+-player can move through walls horizontally if keys are pressed together    
+-player can also move into walls if key is held down when player is few blocks away from a wall    
+
 v.03 1/9/15    
 Updates:    
 -completed movement models    
