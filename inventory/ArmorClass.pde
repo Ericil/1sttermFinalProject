@@ -1,9 +1,15 @@
 class ArmorClass extends ItemClass{
-  float Durability;
-  ArmorClass(){
-    super();
-    Durability = 20;
+  ArmorClass(String a){
+    x = 0;
+    y = 0;
+    size = 20;
+    name = a;
   }
+  ArmorClass(){
+    this("a peice of armor");
+  }
+  
+  float Durability;
   float getDurability(){
     return x;
   }

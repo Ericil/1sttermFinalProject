@@ -2,11 +2,17 @@ class ItemClass{
   float x;
   float y;
   float size;
-  ItemClass(){
-    x = 50;
-    y = 350;
+  String name;
+  ItemClass(String a){
+    x = 0;
+    y = 0;
     size = 20;
+    name = a;
   }
+  ItemClass(){
+    this("an item");
+  }
+    
   void generate(){
     rect(x, y, size, size);
   }
@@ -19,6 +25,9 @@ class ItemClass{
   float getsize(){
     return size;
   }
+  String getname(){
+    return name;
+  }
   void setx(float a){
     x = a;
   }
@@ -27,6 +36,9 @@ class ItemClass{
   }
   void setsize(float a){
     size = a;
+  }
+  void setname(String a){
+    name = a;
   }
 }
 
