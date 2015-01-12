@@ -4,6 +4,10 @@ void setup () {
   player = loadImage("player.jpg");
   frameRate(500);
   Walls();
+  PImage img;
+  img = loadImage("newmap2.jpg");
+  image(img, 0, 0);
+  Walls();
 }
 int value = 0;
 int xvaluerect = 125;
@@ -22,11 +26,11 @@ void draw() {
   d = get(xvaluerect+50, yvaluerect);
   //background(-1);
   PImage img;
-  img = loadImage("testmap.jpg");
+  img = loadImage("map2.png");
   //image(img, 0, 0);
 
   move(toMoveX, toMoveY);
-  //image(player, xvaluerect-25, yvaluerect-25);
+  image(player, xvaluerect-25, yvaluerect-25);
   rectMode(CENTER);
 
   toMoveX = 0;
@@ -107,7 +111,7 @@ void Walls() {
     insertWall(i, 0);
     insertWall(0, i);
     insertWall(19, i);
-    insertWall(i, 19);
+    insertWall(i, 14);
   }
 }
 void insertWall(int x, int y) {
