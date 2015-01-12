@@ -2,6 +2,7 @@ class ItemClass{
   float x;
   float y;
   float size;
+  boolean clicked;
   String name;
   ItemClass(String a){
     x = 0;
@@ -25,6 +26,9 @@ class ItemClass{
   float getsize(){
     return size;
   }
+  boolean getclicked(){
+    return clicked;
+  }
   String getname(){
     return name;
   }
@@ -36,6 +40,9 @@ class ItemClass{
   }
   void setsize(float a){
     size = a;
+  }
+  void setclicked(boolean a){
+    clicked = a;
   }
   void setname(String a){
     name = a;
