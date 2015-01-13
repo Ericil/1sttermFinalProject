@@ -12,8 +12,6 @@ int[] data;// data[0] = helmet, data[1] = armor, data[2] = boots, data[3] = weap
 float itemx;
 float itemy;
 float itemsize = 20;
-boolean over = false;
-boolean locked = false;
 float bdifx = 0.0; 
 float bdify = 0.0; 
 float helmetx = 500;
@@ -26,6 +24,9 @@ float weaponx = 430;
 float weapony = 170;
 float settingx = 50;
 float settingy = 350;
+boolean over = false;
+boolean locked = false;
+boolean isdown = false;
 ItemClass[] stuff;
 void setup() {
   stuff = new ItemClass[10];
@@ -41,6 +42,7 @@ void setup() {
 }
 
 void draw() {
+  printitems();  
   stroke(0);
   fill(200, 200, 100);
   background(0);
@@ -50,33 +52,31 @@ void draw() {
   rect(chestx, chesty, 25, 25);
   rect(bootsx, bootsy, 25, 25);
   rect(weaponx, weapony, 25, 25);
-  printitems();
   lockon();
+  printitems();  
   // Test if the cursor is over the box
   if (mouseX > itemx-itemsize && mouseX < itemx+itemsize && mouseY > itemy-itemsize && mouseY < itemy+itemsize) {
     over = true;  
     if (!locked) { 
-      stroke(255); 
-      fill(153);
+      stroke(255);
     }
   } else {
     stroke(153);
-    fill(153);
     over = false;
   }
-  rect(itemx, itemy, 20, 20);
   // Draw the box
 }
 
 void mousePressed() {
+  isdown = true;
   if (over) { 
-    locked = true; 
-    fill(255, 255, 255);
+    locked = true;
   } else {
     locked = false;
   }
   bdifx = mouseX-itemx; 
   bdify = mouseY-itemy;
+  printitems();
 }
 
 void mouseDragged() {
@@ -88,6 +88,9 @@ void mouseDragged() {
 
 void mouseReleased() {
   locked = false;
+  isdown = false;
+  itemx = 0;
+  itemy = 0;
 }
 void loaditems(int b) {
   try {
@@ -188,13 +191,38 @@ void printitems() {
     for (int a = 0; a < helms.length; a++) {
       float b = helms[a].getx();
       float c = helms[a].gety();
-      rect(b, c, itemsize, itemsize);
-      fill(0, 102, 153);
-      text(helms[a].getname(), b - 10, c);
-      fill(204, 202, 0);
-      if (mouseX > b-itemsize && mouseX < b+itemsize && mouseY > c-itemsize && mouseY < c+itemsize) {
-        itemx = b;
-        itemy = c;
+      if (isdown == true) {
+        if (b - mouseX < 30 && b - mouseX > -30 && c - mouseY < 30 && c - mouseY > -30) {
+          helms[a].setclicked(true);
+          itemx = mouseX;
+          itemy = mouseY;
+          if (itemx != 0 && itemy != 0){
+            helms[a].setx(itemx);
+            helms[a].sety(itemy);
+          }
+        } else {
+                  if (b - helmetx < 30 && b - helmetx > -30 && c - helmety < 30 && c - helmety > -30) {
+          b = helmetx;
+          c = helmety;
+        }
+          helms[a].setclicked(false);
+          fill(204, 202, 0);
+          rect(b, c, 20, 20);
+          fill(0, 102, 153);
+          text(helms[a].getname(), b - 10, c);
+          fill(204, 202, 0);
+        }
+        if (b - helmetx < 30 && b - helmetx > -30 && c - helmety < 30 && c - helmety > -30) {
+          b = helmetx;
+          c = helmety;
+        }
+      } else {
+          fill(204, 202, 0);
+          rect(b, c, 20, 20);
+          fill(0, 102, 153);
+          text(helms[a].getname(), b - 10, c);
+          fill(204, 202, 0);
+       
       }
     }
   }

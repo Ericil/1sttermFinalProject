@@ -9,6 +9,7 @@ class ItemClass{
     y = 0;
     size = 20;
     name = a;
+    clicked = false;
   }
   ItemClass(){
     this("an item");

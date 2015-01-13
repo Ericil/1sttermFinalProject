@@ -7,6 +7,7 @@ class HelmetClass extends ItemClass {
     y = 0;
     size = 20;
     name = a;
+    clicked = false;
   }
     
 }
