@@ -1,6 +1,7 @@
 class Mob {
-  float X = 50;
-  float Y = 50;
+  float X;
+  float Y;
+  float hp;
   public float getX() {
     return X;
   }
@@ -13,9 +14,15 @@ class Mob {
     Y = y;
   }
   void draw(){
-    fill(600);
     rect(X,Y,50,50);
-    fill(600);
-  }   
+    fill(#FF0000);
+  }
+  float getHP(){
+    return hp;
+  }
+  void setHP(float x){
+    hp = x;
+  }  
+    
 }
 
