@@ -1,28 +1,28 @@
 class Mob {
   float X;
   float Y;
-  float hp;
+  int hp;
   public float getX() {
     return X;
   }
   public float getY() {
     return Y;
   }
-  
-  Mob(float x, float y){
+
+  Mob(float x, float y) {
     X = x;
     Y = y;
+    hp = 10;
   }
-  void draw(){
-    rect(X,Y,50,50);
+  void draw() {
+    rect(X, Y, 50, 50);
     fill(#FF0000);
   }
-  float getHP(){
+  int getHP() {
     return hp;
   }
-  void setHP(float x){
+  void setHP(int x) {
     hp = x;
-  }  
-    
+  }
 }
 

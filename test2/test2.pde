@@ -1,8 +1,8 @@
 void setup () {
-  size(1000, 1000);
+  size(1000, 750);
   background(-1);
   player = loadImage("player.jpg");
-  frameRate(500);
+  frameRate(10);
   Walls();
   PImage img;
   img = loadImage("newmap1.jpg");
@@ -14,6 +14,11 @@ void setup () {
   keys[1]=false; //a
   keys[2]=false; //s
   keys[3]=false; //d
+  print(m.getHP());
+  up = loadImage("up.jpg");
+  down = loadImage("down.jpg");
+  left = loadImage("left.jpg");
+  right = loadImage("right.jpg");
 }
 int value = 0;
 int xvaluerect = 125;
@@ -28,64 +33,17 @@ PImage player;
 boolean locked;
 boolean[] keys;
 Mob m = new Mob(125, 175);
+PImage up;
+PImage down;
+PImage left;
+PImage right;
+PImage map;
 void draw() {
-  if (keys[0]) {
-    if (w == -1) {   
-      toMoveY = -50; //up
-      w = get(xvaluerect, yvaluerect-50);
-      a = get(xvaluerect-50, yvaluerect);
-      s = get(xvaluerect, yvaluerect+50);
-      d = get(xvaluerect+50, yvaluerect);
-    }
-    PImage up;
-    up = loadImage("up.jpg");
-    player = up;
-  }
-  if (keys[1]) {
-    if (a == -1 ) {
-      toMoveX = -50;//left
-      w = get(xvaluerect, yvaluerect-50);
-      a = get(xvaluerect-50, yvaluerect);
-      s = get(xvaluerect, yvaluerect+50);
-      d = get(xvaluerect+50, yvaluerect);
-    }
-    PImage left;
-    left = loadImage("left.jpg");
-    player = left;
-  }
-  if (keys[2]) {
-    if (s == -1) {    
-      toMoveY = 50;//down
-      w = get(xvaluerect, yvaluerect-50);
-      a = get(xvaluerect-50, yvaluerect);
-      s = get(xvaluerect, yvaluerect+50);
-      d = get(xvaluerect+50, yvaluerect);
-    }
-    PImage down;
-    down = loadImage("down.jpg");
-    player = down;
-  }
-  if (keys[3]) {
-    if (d == -1) {
-      toMoveX = 50;//right
-      w = get(xvaluerect, yvaluerect-50);
-      a = get(xvaluerect-50, yvaluerect);
-      s = get(xvaluerect, yvaluerect+50);
-      d = get(xvaluerect+50, yvaluerect);
-    }
-    PImage right;
-    right = loadImage("right.jpg");
-    player = right;
-  }
-  w = get(xvaluerect, yvaluerect-50);
-  a = get(xvaluerect-50, yvaluerect);
-  s = get(xvaluerect, yvaluerect+50);
-  d = get(xvaluerect+50, yvaluerect);
+  toMove();
+  blockUpdate();
   background(-1);
-  PImage img;
-  img = loadImage("newmap2.jpg");
-  image(img, 0, 0);
-
+  map = loadImage("newmap1.jpg");
+  image(map, 0, 0);
   move(toMoveX, toMoveY);
   image(player, xvaluerect-25, yvaluerect-25);
   rectMode(CENTER);
@@ -93,7 +51,15 @@ void draw() {
   toMoveX = 0;
   toMoveY = 0;
   m.draw();
+  print(m.getHP()+ "  ");
 }
+
+void delay(int delay)
+{
+  int time = millis();
+  while (millis () - time <= delay);
+}
+
 void keyPressed() {
   if (key == 119 || key == 87) { //w
     keys[0] = true;
@@ -106,61 +72,7 @@ void keyPressed() {
   }
   if (key == 100 || key == 68) { //d
     keys[3] = true;
-  } 
-  /*
-  if ((key == 119 || key == 87) && !locked) {
-   locked = true;
-   if (w == -1) {
-   
-   toMoveY = -50; //up
-   w = get(xvaluerect, yvaluerect-50);
-   a = get(xvaluerect-50, yvaluerect);
-   s = get(xvaluerect, yvaluerect+50);
-   d = get(xvaluerect+50, yvaluerect);
-   }
-   PImage up;
-   up = loadImage("up.jpg");
-   player = up;
-   locked = false;
-   } else if (key == 97 || key == 65 && !locked) {
-   locked = true;  
-   if (a == -1 ) {
-   toMoveX = -50;//left
-   w = get(xvaluerect, yvaluerect-50);
-   a = get(xvaluerect-50, yvaluerect);
-   s = get(xvaluerect, yvaluerect+50);
-   d = get(xvaluerect+50, yvaluerect);
-   }
-   PImage left;
-   left = loadImage("left.jpg");
-   player = left;
-   locked = false;
-   } else if (key == 115 || key == 83) {    
-   if (s == -1) {    
-   toMoveY = 50;//down
-   w = get(xvaluerect, yvaluerect-50);
-   a = get(xvaluerect-50, yvaluerect);
-   s = get(xvaluerect, yvaluerect+50);
-   d = get(xvaluerect+50, yvaluerect);
-   }
-   PImage down;
-   down = loadImage("down.jpg");
-   player = down;
-   return;
-   } else if (key == 100 || key == 68) {
-   if (d == -1) {
-   toMoveX = 50;//right
-   w = get(xvaluerect, yvaluerect-50);
-   a = get(xvaluerect-50, yvaluerect);
-   s = get(xvaluerect, yvaluerect+50);
-   d = get(xvaluerect+50, yvaluerect);
-   }
-   PImage right;
-   right = loadImage("right.jpg");
-   player = right;
-   return;
-   }
-   */
+  }
 }
 
 void keyReleased() {
@@ -181,6 +93,11 @@ void keyReleased() {
 void move(int X, int Y) {
   xvaluerect += X;
   yvaluerect += Y;
+}
+
+void combat(Mob a) {  
+  a.setHP(a.getHP() - 1);
+  print(m.getHP());
 }
 
 void wrapping() {
@@ -213,6 +130,19 @@ void insertSpace(int x, int y) {
   image(space, x * 50, y * 50);
 }
 
+void keyClear() {
+  keys[0]=false; //w
+  keys[1]=false; //a
+  keys[2]=false; //s
+  keys[3]=false; //d
+}
+
+void blockUpdate() {
+  w = get(xvaluerect, yvaluerect-50);
+  a = get(xvaluerect-50, yvaluerect);
+  s = get(xvaluerect, yvaluerect+50);
+  d = get(xvaluerect+50, yvaluerect);
+}
 
 void mouseClicked() {
   if (get(mouseX, mouseY) == -1) {
@@ -222,3 +152,49 @@ void mouseClicked() {
   }
 }
 
+void toMove() {
+  if (keys[0]) {
+    blockUpdate();
+    if (w == -1) {   
+      toMoveY = -50; //up
+    }
+    if (w == -65536) {
+      combat(m);
+    }
+    player = up;
+    keyClear();
+  }
+  if (keys[1]) {
+    blockUpdate();
+    if (a == -1 ) {
+      toMoveX = -50;//left
+    }
+    if (a == -65536) {
+      combat(m);
+    }
+    player = left;
+    keyClear();
+  }
+  if (keys[2]) {
+    blockUpdate();
+    if (s == -1) {    
+      toMoveY = 50;//down
+    }
+    if (s == -65536) {
+      combat(m);
+    }
+    player = down;
+    keyClear();
+  }
+  if (keys[3]) {
+    blockUpdate();
+    if (d == -1) {
+      toMoveX = 50;//right
+    }
+    if (d == -65536) {
+      combat(m);
+    }
+    keyClear();
+    player = right;
+  }
+}
