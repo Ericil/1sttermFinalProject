@@ -76,14 +76,9 @@ void mousePressed() {
   }
   bdifx = mouseX-itemx; 
   bdify = mouseY-itemy;
-  printitems();
 }
 
 void mouseDragged() {
-  if (locked) {
-    itemx = mouseX-bdifx; 
-    itemy = mouseY-bdify;
-  }
 }
 
 void mouseReleased() {
@@ -194,38 +189,39 @@ void printitems() {
       if (isdown == true) {
         if (b - mouseX < 30 && b - mouseX > -30 && c - mouseY < 30 && c - mouseY > -30) {
           helms[a].setclicked(true);
-          itemx = mouseX;
-          itemy = mouseY;
-          if (itemx != 0 && itemy != 0){
-            helms[a].setx(itemx);
-            helms[a].sety(itemy);
-          }
-        } else {
-                  if (b - helmetx < 30 && b - helmetx > -30 && c - helmety < 30 && c - helmety > -30) {
+
+        }
+        if (helms[a].getclicked() == true){
+          b = mouseX;
+          c = mouseY;
+        }
+      fill(204, 202, 0);
+      rect(b, c, 20, 20);
+      fill(0, 102, 153);
+      text(helms[a].getname(), b - 10, c);
+      fill(204, 202, 0);
+      }else if (isdown == false){
+        print("falsetrigger");
+        if (mouseX - helmetx < 30 && mouseY - helmetx > -30 && mouseX - helmety < 30 && mouseY - helmety > -30) {
           b = helmetx;
           c = helmety;
-        }
           helms[a].setclicked(false);
-          fill(204, 202, 0);
-          rect(b, c, 20, 20);
-          fill(0, 102, 153);
-          text(helms[a].getname(), b - 10, c);
-          fill(204, 202, 0);
+          print("triggered");
+        }else{
+          b = helms[a].getx();
+          c = helms[a].gety();
+          helms[a].setclicked(false);
         }
-        if (b - helmetx < 30 && b - helmetx > -30 && c - helmety < 30 && c - helmety > -30) {
-          b = helmetx;
-          c = helmety;
-        }
-      } else {
-          fill(204, 202, 0);
-          rect(b, c, 20, 20);
-          fill(0, 102, 153);
-          text(helms[a].getname(), b - 10, c);
-          fill(204, 202, 0);
-       
+      fill(204, 202, 0);
+      rect(b, c, 20, 20);
+      fill(0, 102, 153);
+      text(helms[a].getname(), b - 10, c);
+      fill(204, 202, 0);
       }
     }
   }
+
+
   if (armors != null && armors.length != 0) {
     for (int a = 0; a < armors.length; a++) {
       float b = armors[a].getx();
