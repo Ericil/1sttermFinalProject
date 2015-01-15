@@ -16,22 +16,25 @@ float bdifx = 0.0;
 float bdify = 0.0; 
 float helmetx = 500;
 float helmety = 100;
-float chestx = 500;
-float chesty = 170;
+float armorx = 500;
+float armory = 170;
 float bootsx = 500;
 float bootsy = 240;
 float weaponx = 430;
 float weapony = 170;
 float settingx = 50;
 float settingy = 350;
-boolean over = false;
-boolean locked = false;
 boolean isdown = false;
+boolean isclicked = false;
+String thechosen = "";
+String thehelmet = "";
+String thearmor = "";
+String theboots = "";
+String theweapon = "";
 ItemClass[] stuff;
 void setup() {
   stuff = new ItemClass[10];
   data = new int[4];
-  print(data[0]);
   size(600, 600);
   rectMode(RADIUS);
   stuff[0] = new ItemClass();
@@ -49,40 +52,21 @@ void draw() {
   rect(0, height/4 * 3, width, height/4);
   fill(204, 202, 0);
   rect(helmetx, helmety, 25, 25);
-  rect(chestx, chesty, 25, 25);
+  rect(armorx, armory, 25, 25);
   rect(bootsx, bootsy, 25, 25);
   rect(weaponx, weapony, 25, 25);
   lockon();
   printitems();  
-  // Test if the cursor is over the box
-  if (mouseX > itemx-itemsize && mouseX < itemx+itemsize && mouseY > itemy-itemsize && mouseY < itemy+itemsize) {
-    over = true;  
-    if (!locked) { 
-      stroke(255);
-    }
-  } else {
-    stroke(153);
-    over = false;
-  }
-  // Draw the box
 }
 
 void mousePressed() {
   isdown = true;
-  if (over) { 
-    locked = true;
-  } else {
-    locked = false;
-  }
-  bdifx = mouseX-itemx; 
-  bdify = mouseY-itemy;
 }
 
 void mouseDragged() {
 }
 
 void mouseReleased() {
-  locked = false;
   isdown = false;
   itemx = 0;
   itemy = 0;
@@ -101,7 +85,6 @@ void loaditems(int b) {
     noLoop();
   } else {
     inbetween = split(line, ",");
-    print(inbetween[0]);
     if (b == 0) {
       helms = new HelmetClass[inbetween.length];
     }
@@ -187,11 +170,11 @@ void printitems() {
       float b = helms[a].getx();
       float c = helms[a].gety();
       if (isdown == true) {
-        if (b - mouseX < 30 && b - mouseX > -30 && c - mouseY < 30 && c - mouseY > -30) {
-          helms[a].setclicked(true);
-
+        if (b - mouseX < 30 && b - mouseX > -30 && c - mouseY < 30 && c - mouseY > -30 && isclicked == false) {
+          isclicked = true;
+          thechosen = helms[a].getname();
         }
-        if (helms[a].getclicked() == true){
+        if (thechosen == helms[a].getname()){
           b = mouseX;
           c = mouseY;
         }
@@ -200,38 +183,59 @@ void printitems() {
       fill(0, 102, 153);
       text(helms[a].getname(), b - 10, c);
       fill(204, 202, 0);
-      }else if (isdown == false){
-        print("falsetrigger");
-        if (mouseX - helmetx < 30 && mouseY - helmetx > -30 && mouseX - helmety < 30 && mouseY - helmety > -30) {
+      }
+      if (isdown == false){
+        if ((mouseX - helmetx < 30 && mouseX - helmetx > -30 && mouseY - helmety < 30 && mouseY - helmety > -30 && thechosen == helms[a].getname()) || thehelmet == helms[a].getname()){
           b = helmetx;
           c = helmety;
-          helms[a].setclicked(false);
-          print("triggered");
-        }else{
+          thehelmet = helms[a].getname();
+        }else if (b != helmetx && c != helmety){
           b = helms[a].getx();
           c = helms[a].gety();
-          helms[a].setclicked(false);
         }
       fill(204, 202, 0);
       rect(b, c, 20, 20);
       fill(0, 102, 153);
       text(helms[a].getname(), b - 10, c);
       fill(204, 202, 0);
+      isclicked = false;
       }
     }
   }
-
-
   if (armors != null && armors.length != 0) {
     for (int a = 0; a < armors.length; a++) {
       float b = armors[a].getx();
       float c = armors[a].gety();
-      rect(b, c, itemsize, itemsize);
+      if (isdown == true) {
+        if (b - mouseX < 30 && b - mouseX > -30 && c - mouseY < 30 && c - mouseY > -30 && isclicked == false) {
+          isclicked = true;
+          thechosen = armors[a].getname();
+        }
+        if (thechosen == armors[a].getname()){
+          b = mouseX;
+          c = mouseY;
+        }
+      fill(204, 202, 0);
+      rect(b, c, 20, 20);
+      fill(0, 102, 153);
       text(armors[a].getname(), b - 10, c);
       fill(204, 202, 0);
-      if (mouseX > b-itemsize && mouseX < b+itemsize && mouseY > c-itemsize && mouseY < c+itemsize) {
-        itemx = b;
-        itemy = c;
+      }
+      if (isdown == false){
+        if ((mouseX - armorx < 30 && mouseX - armorx > -30 && mouseY - armory < 30 && mouseY - armory > -30 && thechosen == armors[a].getname()) || thearmor == armors[a].getname()){
+          b = armorx;
+          c = armory;
+          thearmor = armors[a].getname();
+        }else if (b != armorx && c != armory){
+          b = armors[a].getx();
+          c = armors[a].gety();
+        }
+      fill(204, 202, 0);
+      rect(b, c, 20, 20);
+      fill(0, 102, 153);
+      text(armors[a].getname(), b - 10, c);
+      fill(204, 202, 0);
+      isclicked = false;
       }
     }
   }
@@ -239,13 +243,36 @@ void printitems() {
     for (int a = 0; a < bootss.length; a++) {
       float b = bootss[a].getx();
       float c = bootss[a].gety();
-      rect(b, c, itemsize, itemsize);
+      if (isdown == true) {
+        if (b - mouseX < 30 && b - mouseX > -30 && c - mouseY < 30 && c - mouseY > -30 && isclicked == false) {
+          isclicked = true;
+          thechosen = bootss[a].getname();
+        }
+        if (thechosen == bootss[a].getname()){
+          b = mouseX;
+          c = mouseY;
+        }
+      fill(204, 202, 0);
+      rect(b, c, 20, 20);
       fill(0, 102, 153);
       text(bootss[a].getname(), b - 10, c);
       fill(204, 202, 0);
-      if (mouseX > b-itemsize && mouseX < b+itemsize && mouseY > c-itemsize && mouseY < c+itemsize) {
-        itemx = b;
-        itemy = c;
+      }
+      if (isdown == false){
+        if ((mouseX - bootsx < 30 && mouseX - bootsx > -30 && mouseY - bootsy < 30 && mouseY - bootsy > -30 && thechosen == bootss[a].getname()) || theboots == bootss[a].getname()){
+          b = bootsx;
+          c = bootsy;
+          theboots = bootss[a].getname();
+        }else if (b != bootsx && c != bootsy){
+          b = bootss[a].getx();
+          c = bootss[a].gety();
+        }
+      fill(204, 202, 0);
+      rect(b, c, 20, 20);
+      fill(0, 102, 153);
+      text(bootss[a].getname(), b - 10, c);
+      fill(204, 202, 0);
+      isclicked = false;
       }
     }
   }
@@ -253,13 +280,36 @@ void printitems() {
     for (int a = 0; a < weapons.length; a++) {
       float b = weapons[a].getx();
       float c = weapons[a].gety();
-      rect(b, c, itemsize, itemsize);
+      if (isdown == true) {
+        if (b - mouseX < 30 && b - mouseX > -30 && c - mouseY < 30 && c - mouseY > -30 && isclicked == false) {
+          isclicked = true;
+          thechosen = weapons[a].getname();
+        }
+        if (thechosen == weapons[a].getname()){
+          b = mouseX;
+          c = mouseY;
+        }
+      fill(204, 202, 0);
+      rect(b, c, 20, 20);
       fill(0, 102, 153);
       text(weapons[a].getname(), b - 10, c);
       fill(204, 202, 0);
-      if (mouseX > b-itemsize && mouseX < b+itemsize && mouseY > c-itemsize && mouseY < c+itemsize) {
-        itemx = b;
-        itemy = c;
+      }
+      if (isdown == false){
+        if ((mouseX - weaponx < 30 && mouseX - weaponx > -30 && mouseY - weapony < 30 && mouseY - weapony > -30 && thechosen == weapons[a].getname()) || theweapon == weapons[a].getname()){
+          b = weaponx;
+          c = weapony;
+          theweapon = weapons[a].getname();
+        }else if (b != weaponx && c != weapony){
+          b = weapons[a].getx();
+          c = weapons[a].gety();
+        }
+      fill(204, 202, 0);
+      rect(b, c, 20, 20);
+      fill(0, 102, 153);
+      text(weapons[a].getname(), b - 10, c);
+      fill(204, 202, 0);
+      isclicked = false;
       }
     }
   }
@@ -270,9 +320,9 @@ void lockon() {
     itemx = helmetx;
     itemy = helmety;
   }
-  if (itemx - chestx < 20 && itemx - chestx > -20 && itemy - chesty < 20 && itemy - chesty > -20) {
-    itemx = chestx;
-    itemy = chesty;
+  if (itemx - armorx < 20 && itemx - armorx > -20 && itemy - armory < 20 && itemy - armory > -20) {
+    itemx = armorx;
+    itemy = armory;
   }
   if (itemx - bootsx < 20 && itemx - bootsx > -20 && itemy - bootsy < 20 && itemy - bootsy > -20) {
     itemx = bootsx;
