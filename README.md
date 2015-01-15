@@ -1,5 +1,12 @@
 1stTermFinalProject
 ===================    
+v.04 1/14/15    
+Updates:    
+-Inventory almost completely done    
+-started combat code    
+
+Bugfixes:    
+-fixed player moving through walls in both scenarios    
 v.03.1 1/10/15    
 Bugs:    
 -player can move through walls horizontally if keys are pressed together    
