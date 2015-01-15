@@ -1,7 +1,8 @@
 class Mob {
-  float X;
-  float Y;
+  int X;
+  int Y;
   int hp;
+  int atk;
   public float getX() {
     return X;
   }
@@ -9,10 +10,11 @@ class Mob {
     return Y;
   }
 
-  Mob(float x, float y) {
+  Mob(int x, int y, int HP, int ATK) {
     X = x;
     Y = y;
-    hp = 10;
+    hp = HP;
+    atk = ATK;
   }
   void draw() {
     rect(X, Y, 50, 50);
@@ -23,6 +25,9 @@ class Mob {
   }
   void setHP(int x) {
     hp = x;
+  }
+  int getATK(){
+    return atk;
   }
 }
 

@@ -14,11 +14,15 @@ void setup () {
   keys[1]=false; //a
   keys[2]=false; //s
   keys[3]=false; //d
-  print(m.getHP());
   up = loadImage("up.jpg");
   down = loadImage("down.jpg");
   left = loadImage("left.jpg");
   right = loadImage("right.jpg");
+  playerHP = 10;
+  level = 1;
+  mapname = "newmap2.jpg";
+  map = loadImage("map4.png");
+  image(map,0,0);
 }
 int value = 0;
 int xvaluerect = 125;
@@ -32,17 +36,23 @@ color d = 0;
 PImage player;
 boolean locked;
 boolean[] keys;
-Mob m = new Mob(125, 175);
+Mob m = new Mob(175, 125,10,10);
 PImage up;
 PImage down;
 PImage left;
 PImage right;
 PImage map;
+int playerHP;
+int chance;
+int level;
+String mapname;
 void draw() {
+  
+  /*mapname = "newmap" + Integer.toString(level) + ".jpg";
   toMove();
   blockUpdate();
   background(-1);
-  map = loadImage("newmap1.jpg");
+  map = loadImage(mapname);
   image(map, 0, 0);
   move(toMoveX, toMoveY);
   image(player, xvaluerect-25, yvaluerect-25);
@@ -50,8 +60,18 @@ void draw() {
 
   toMoveX = 0;
   toMoveY = 0;
-  m.draw();
-  print(m.getHP()+ "  ");
+  if (m.getHP() > 0) {
+    m.draw();
+  }
+  if((xvaluerect == 925) && (yvaluerect == 725)){
+    level++;
+    xvaluerect = 75;
+    yvaluerect = 25;
+  }
+  */
+  if (keys[0]){
+    save("newmap4.jpg");
+  }
 }
 
 void delay(int delay)
@@ -93,11 +113,6 @@ void keyReleased() {
 void move(int X, int Y) {
   xvaluerect += X;
   yvaluerect += Y;
-}
-
-void combat(Mob a) {  
-  a.setHP(a.getHP() - 1);
-  print(m.getHP());
 }
 
 void wrapping() {
@@ -198,3 +213,18 @@ void toMove() {
     player = right;
   }
 }
+
+void combat(Mob a) {
+  print("\n\n\n\n");
+  int damage = 1;
+  chance = int(random(100));
+  if (chance > 30) {
+    a.setHP(a.getHP() - damage);
+  } else {
+    print("You missed\n");
+  }
+  
+  print("Player: " + playerHP + " HP\n");
+  print("Enemy: " + a.getHP() + " HP");
+}
+
