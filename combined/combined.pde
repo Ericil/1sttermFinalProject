@@ -54,6 +54,7 @@ int playerHP;
 int chance;
 int level;
 String mapname;
+int footstep;
 void setup () {
   size(1250, 750);
   background(-1);
@@ -215,6 +216,9 @@ void mouseClicked() {
  */
 
 void toMove() {
+  if (footstep = 2){
+    footstep = 0;
+  }
   if (keys[0]) {
     blockUpdate();
     if (w == -1) {   
