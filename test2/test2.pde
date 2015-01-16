@@ -20,9 +20,7 @@ void setup () {
   right = loadImage("right.jpg");
   playerHP = 10;
   level = 1;
-  mapname = "newmap2.jpg";
-  map = loadImage("map4.png");
-  image(map,0,0);
+  mapname = "newmap1.jpg";
 }
 int value = 0;
 int xvaluerect = 125;
@@ -36,7 +34,7 @@ color d = 0;
 PImage player;
 boolean locked;
 boolean[] keys;
-Mob m = new Mob(175, 125,10,10);
+Mob m = new Mob(175, 125, 10, 10);
 PImage up;
 PImage down;
 PImage left;
@@ -47,8 +45,8 @@ int chance;
 int level;
 String mapname;
 void draw() {
-  
-  /*mapname = "newmap" + Integer.toString(level) + ".jpg";
+
+  mapname = "newmap" + Integer.toString(level) + ".jpg";
   toMove();
   blockUpdate();
   background(-1);
@@ -63,14 +61,10 @@ void draw() {
   if (m.getHP() > 0) {
     m.draw();
   }
-  if((xvaluerect == 925) && (yvaluerect == 725)){
+  if ((xvaluerect == 925) && (yvaluerect == 725)) {
     level++;
     xvaluerect = 75;
     yvaluerect = 25;
-  }
-  */
-  if (keys[0]){
-    save("newmap4.jpg");
   }
 }
 
@@ -159,13 +153,15 @@ void blockUpdate() {
   d = get(xvaluerect+50, yvaluerect);
 }
 
+/*
 void mouseClicked() {
-  if (get(mouseX, mouseY) == -1) {
-    insertWall(mouseX/50, mouseY/50);
-  } else {
-    insertSpace(mouseX/50, mouseY/50);
-  }
-}
+ if (get(mouseX, mouseY) == -1) {
+ insertWall(mouseX/50, mouseY/50);
+ } else {
+ insertSpace(mouseX/50, mouseY/50);
+ }
+ }
+ */
 
 void toMove() {
   if (keys[0]) {
@@ -223,7 +219,7 @@ void combat(Mob a) {
   } else {
     print("You missed\n");
   }
-  
+
   print("Player: " + playerHP + " HP\n");
   print("Enemy: " + a.getHP() + " HP");
 }
