@@ -22,7 +22,7 @@ float bootsx = 1150;
 float bootsy = 240;
 float weaponx = 1100;
 float weapony = 170;
-float settingx = 1120;
+float settingx = 1000;
 float settingy = 350;
 boolean isdown = false;
 boolean isclicked = false;
@@ -58,7 +58,6 @@ void setup () {
   size(1250, 750);
   background(-1);
   player = loadImage("player.jpg");
-  frameRate(40);
   Walls();
   PImage img;
   img = loadImage("newmap1.jpg");
@@ -111,15 +110,13 @@ void draw() {
   }
   printitems();  
   stroke(0);
-  fill(200, 200, 100);
-  fill(204, 202, 0);
   rect(helmetx, helmety, 25, 25);
   rect(armorx, armory, 25, 25);
   rect(bootsx, bootsy, 25, 25);
   rect(weaponx, weapony, 25, 25);
   lockon();
-  printitems(); 
-  print(helms[3].getx());
+  printitems();
+  fill(#FF0000);
 }
 
 void delay(int delay)
@@ -334,54 +331,50 @@ void loaditems(int b) {
 void initalizeitems() {
   if (helms != null && helms.length != 0) {
     for (int b = 0; b < helms.length; b++) {
-      print(settingx);
+      if (settingx < 1200) {
+        settingx += 50;
+      } else{
+        settingx = 1050;
+        settingy += 50;
+      }
       helms[b].setx(settingx);
       helms[b].sety(settingy);
-      if (settingx < 1250) {
-        settingx += 50;
-        print("right");
-      } else if (settingx > 1250){
-        print("down");
-        settingx -= 1120;
-        settingy += 50;
-        print(settingx);
-      }
     }
   }
   if (armors != null && armors.length != 0) {
     for (int b = 0; b < armors.length; b++) {
-      armors[b].setx(settingx);
-      armors[b].sety(settingy);
-      if (settingx < 1250) {
+      if (settingx < 1200) {
         settingx += 50;
-      } else {
-        settingx = 1120;
+      } else{
+        settingx = 1050;
         settingy += 50;
       }
+      armors[b].setx(settingx);
+      armors[b].sety(settingy);
     }
   }
   if (bootss != null && bootss.length != 0) {
     for (int b = 0; b < bootss.length; b++) {
-      bootss[b].setx(settingx);
-      bootss[b].sety(settingy);
-      if (settingx < 1250) {
+      if (settingx < 1200) {
         settingx += 50;
-      } else {
-        settingx = 1120;
+      } else{
+        settingx = 1050;
         settingy += 50;
       }
+      bootss[b].setx(settingx);
+      bootss[b].sety(settingy);
     }
   }
   if (weapons != null && weapons.length != 0) {
     for (int b = 0; b < weapons.length; b++) {
-      weapons[b].setx(settingx);
-      weapons[b].sety(settingy);
       if (settingx < 1250) {
         settingx += 50;
       } else {
         settingx = 1120;
         settingy += 50;
       }
+      weapons[b].setx(settingx);
+      weapons[b].sety(settingy);
     }
   }
 } 
