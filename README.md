@@ -1,5 +1,14 @@
 1stTermFinalProject
 ===================    
+v.05 1/16/15    
+Updates:    
+-maps had been completely resized so they fit on other resolution screens    
+-maps will automatically load the next level when the player reaches the end of the map    
+-combat/mob interaction updates with text in console    
+To Do:    
+-load spawns of different mobs on each level    
+-balance combat code    
+
 v.04 1/14/15    
 Updates:    
 -Inventory almost completely done    
