@@ -54,11 +54,11 @@ int playerHP;
 int chance;
 int level;
 String mapname;
-int footstep;
+int footstep = 1;
 void setup () {
   size(1250, 750);
   background(-1);
-  player = loadImage("player.jpg");
+  player = loadImage("down0.jpg");
   Walls();
   PImage img;
   img = loadImage("newmap1.jpg");
@@ -70,10 +70,10 @@ void setup () {
   keys[1]=false; //a
   keys[2]=false; //s
   keys[3]=false; //d
-  up = loadImage("up.jpg");
-  down = loadImage("down.jpg");
-  left = loadImage("left.jpg");
-  right = loadImage("right.jpg");
+  up = loadImage("up0.jpg");
+  down = loadImage("down0.jpg");
+  left = loadImage("left0.jpg");
+  right = loadImage("right0.jpg");
   playerHP = 10;
   level = 1;
   mapname = "newmap1.jpg";
@@ -216,13 +216,17 @@ void mouseClicked() {
  */
 
 void toMove() {
-  if (footstep = 2){
-    footstep = 0;
-  }
   if (keys[0]) {
     blockUpdate();
     if (w == -1) {   
       toMoveY = -50; //up
+      if (footstep == 1){
+        up = loadImage("up1.jpg");
+        footstep = 0;
+      }else{
+        up = loadImage("up0.jpg");
+        footstep = 1;
+      }
     }
     if (w == -65536) {
       combat(m);
@@ -234,6 +238,13 @@ void toMove() {
     blockUpdate();
     if (a == -1 ) {
       toMoveX = -50;//left
+      if (footstep == 1){
+        left = loadImage("left1.jpg");
+        footstep = 0;
+      }else{
+        left = loadImage("left0.jpg");
+        footstep = 1;
+      }
     }
     if (a == -65536) {
       combat(m);
@@ -245,6 +256,13 @@ void toMove() {
     blockUpdate();
     if (s == -1) {    
       toMoveY = 50;//down
+      if (footstep == 1){
+        down = loadImage("down1.jpg");
+        footstep = 0;
+      }else{
+        down = loadImage("down0.jpg");
+        footstep = 1;
+      }
     }
     if (s == -65536) {
       combat(m);
@@ -256,6 +274,13 @@ void toMove() {
     blockUpdate();
     if (d == -1) {
       toMoveX = 50;//right
+      if (footstep == 1){
+        right = loadImage("right1.jpg");
+        footstep = 0;
+      }else{
+        right = loadImage("right0.jpg");
+        footstep = 1;
+      }
     }
     if (d == -65536) {
       combat(m);
