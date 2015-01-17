@@ -59,6 +59,7 @@ void setup () {
   size(1250, 750);
   background(-1);
   player = loadImage("down0.jpg");
+  Walls();
   PImage img;
   img = loadImage("newmap1.jpg");
   image(img, 0, 0);
@@ -181,7 +182,6 @@ void Walls() {
     insertWall(i, 14);
   }
 }
-/*
 void insertWall(int x, int y) {
   PImage wall = loadImage("wall.jpg");
   image(wall, x * 50, y * 50);
@@ -190,7 +190,6 @@ void insertSpace(int x, int y) {
   PImage space = loadImage("space.jpg");
   image(space, x * 50, y * 50);
 }
-*/
 
 void keyClear() {
   keys[0]=false; //w
@@ -206,23 +205,25 @@ void blockUpdate() {
   d = get(xvaluerect+50, yvaluerect);
 }
 
+/*
 void mouseClicked() {
-  if (get(mouseX, mouseY) == -1) {
-    insertWall(mouseX/50, mouseY/50);
-  } else {
-    insertSpace(mouseX/50, mouseY/50);
-  }
-}
+ if (get(mouseX, mouseY) == -1) {
+ insertWall(mouseX/50, mouseY/50);
+ } else {
+ insertSpace(mouseX/50, mouseY/50);
+ }
+ }
+ */
 
 void toMove() {
   if (keys[0]) {
     blockUpdate();
     if (w == -1) {   
       toMoveY = -50; //up
-      if (footstep == 1) {
+      if (footstep == 1){
         up = loadImage("up1.jpg");
         footstep = 0;
-      } else {
+      }else{
         up = loadImage("up0.jpg");
         footstep = 1;
       }
@@ -237,10 +238,10 @@ void toMove() {
     blockUpdate();
     if (a == -1 ) {
       toMoveX = -50;//left
-      if (footstep == 1) {
+      if (footstep == 1){
         left = loadImage("left1.jpg");
         footstep = 0;
-      } else {
+      }else{
         left = loadImage("left0.jpg");
         footstep = 1;
       }
@@ -255,10 +256,10 @@ void toMove() {
     blockUpdate();
     if (s == -1) {    
       toMoveY = 50;//down
-      if (footstep == 1) {
+      if (footstep == 1){
         down = loadImage("down1.jpg");
         footstep = 0;
-      } else {
+      }else{
         down = loadImage("down0.jpg");
         footstep = 1;
       }
@@ -273,10 +274,10 @@ void toMove() {
     blockUpdate();
     if (d == -1) {
       toMoveX = 50;//right
-      if (footstep == 1) {
+      if (footstep == 1){
         right = loadImage("right1.jpg");
         footstep = 0;
-      } else {
+      }else{
         right = loadImage("right0.jpg");
         footstep = 1;
       }
@@ -361,7 +362,7 @@ void initalizeitems() {
     for (int b = 0; b < helms.length; b++) {
       if (settingx < 1200) {
         settingx += 50;
-      } else {
+      } else{
         settingx = 1050;
         settingy += 50;
       }
@@ -373,7 +374,7 @@ void initalizeitems() {
     for (int b = 0; b < armors.length; b++) {
       if (settingx < 1200) {
         settingx += 50;
-      } else {
+      } else{
         settingx = 1050;
         settingy += 50;
       }
@@ -385,7 +386,7 @@ void initalizeitems() {
     for (int b = 0; b < bootss.length; b++) {
       if (settingx < 1200) {
         settingx += 50;
-      } else {
+      } else{
         settingx = 1050;
         settingy += 50;
       }
@@ -417,31 +418,37 @@ void printitems() {
           isclicked = true;
           thechosen = helms[a].getname();
         }
-        if (thechosen == helms[a].getname()) {
+        if (thechosen == helms[a].getname()){
           b = mouseX;
           c = mouseY;
         }
-        fill(204, 202, 0);
-        rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(helms[a].getname(), b - 10, c);
-        fill(204, 202, 0);
+      imageMode(CENTER);
+      PImage testing = loadImage("sword" + (a+1) + ".png");
+      fill(204, 202, 0);
+      image(testing, b, c);
+      fill(0, 102, 153);
+      text(helms[a].getname(), b - 10, c);
+      fill(204, 202, 0);
+      imageMode(CORNER);
       }
-      if (isdown == false) {
-        if ((mouseX - helmetx < 30 && mouseX - helmetx > -30 && mouseY - helmety < 30 && mouseY - helmety > -30 && thechosen == helms[a].getname()) || thehelmet == helms[a].getname()) {
+      if (isdown == false){
+        if ((mouseX - helmetx < 30 && mouseX - helmetx > -30 && mouseY - helmety < 30 && mouseY - helmety > -30 && thechosen == helms[a].getname()) || thehelmet == helms[a].getname()){
           b = helmetx;
           c = helmety;
           thehelmet = helms[a].getname();
-        } else if (b != helmetx && c != helmety) {
+        }else if (b != helmetx && c != helmety){
           b = helms[a].getx();
           c = helms[a].gety();
         }
-        fill(204, 202, 0);
-        rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(helms[a].getname(), b - 10, c);
-        fill(204, 202, 0);
-        isclicked = false;
+      imageMode(CENTER);
+      PImage testing = loadImage("sword" + (a+1) + ".png");
+      fill(204, 202, 0);
+      image(testing, b, c);
+      fill(0, 102, 153);
+      text(helms[a].getname(), b - 10, c);
+      fill(204, 202, 0);
+      isclicked = false;
+      imageMode(CORNER);
       }
     }
   }
@@ -454,31 +461,31 @@ void printitems() {
           isclicked = true;
           thechosen = armors[a].getname();
         }
-        if (thechosen == armors[a].getname()) {
+        if (thechosen == armors[a].getname()){
           b = mouseX;
           c = mouseY;
         }
-        fill(204, 202, 0);
-        rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(armors[a].getname(), b - 10, c);
-        fill(204, 202, 0);
+      fill(204, 202, 0);
+      rect(b, c, 20, 20);
+      fill(0, 102, 153);
+      text(armors[a].getname(), b - 10, c);
+      fill(204, 202, 0);
       }
-      if (isdown == false) {
-        if ((mouseX - armorx < 30 && mouseX - armorx > -30 && mouseY - armory < 30 && mouseY - armory > -30 && thechosen == armors[a].getname()) || thearmor == armors[a].getname()) {
+      if (isdown == false){
+        if ((mouseX - armorx < 30 && mouseX - armorx > -30 && mouseY - armory < 30 && mouseY - armory > -30 && thechosen == armors[a].getname()) || thearmor == armors[a].getname()){
           b = armorx;
           c = armory;
           thearmor = armors[a].getname();
-        } else if (b != armorx && c != armory) {
+        }else if (b != armorx && c != armory){
           b = armors[a].getx();
           c = armors[a].gety();
         }
-        fill(204, 202, 0);
-        rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(armors[a].getname(), b - 10, c);
-        fill(204, 202, 0);
-        isclicked = false;
+      fill(204, 202, 0);
+      rect(b, c, 20, 20);
+      fill(0, 102, 153);
+      text(armors[a].getname(), b - 10, c);
+      fill(204, 202, 0);
+      isclicked = false;
       }
     }
   }
@@ -491,31 +498,31 @@ void printitems() {
           isclicked = true;
           thechosen = bootss[a].getname();
         }
-        if (thechosen == bootss[a].getname()) {
+        if (thechosen == bootss[a].getname()){
           b = mouseX;
           c = mouseY;
         }
-        fill(204, 202, 0);
-        rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(bootss[a].getname(), b - 10, c);
-        fill(204, 202, 0);
+      fill(204, 202, 0);
+      rect(b, c, 20, 20);
+      fill(0, 102, 153);
+      text(bootss[a].getname(), b - 10, c);
+      fill(204, 202, 0);
       }
-      if (isdown == false) {
-        if ((mouseX - bootsx < 30 && mouseX - bootsx > -30 && mouseY - bootsy < 30 && mouseY - bootsy > -30 && thechosen == bootss[a].getname()) || theboots == bootss[a].getname()) {
+      if (isdown == false){
+        if ((mouseX - bootsx < 30 && mouseX - bootsx > -30 && mouseY - bootsy < 30 && mouseY - bootsy > -30 && thechosen == bootss[a].getname()) || theboots == bootss[a].getname()){
           b = bootsx;
           c = bootsy;
           theboots = bootss[a].getname();
-        } else if (b != bootsx && c != bootsy) {
+        }else if (b != bootsx && c != bootsy){
           b = bootss[a].getx();
           c = bootss[a].gety();
         }
-        fill(204, 202, 0);
-        rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(bootss[a].getname(), b - 10, c);
-        fill(204, 202, 0);
-        isclicked = false;
+      fill(204, 202, 0);
+      rect(b, c, 20, 20);
+      fill(0, 102, 153);
+      text(bootss[a].getname(), b - 10, c);
+      fill(204, 202, 0);
+      isclicked = false;
       }
     }
   }
@@ -528,31 +535,31 @@ void printitems() {
           isclicked = true;
           thechosen = weapons[a].getname();
         }
-        if (thechosen == weapons[a].getname()) {
+        if (thechosen == weapons[a].getname()){
           b = mouseX;
           c = mouseY;
         }
-        fill(204, 202, 0);
-        rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(weapons[a].getname(), b - 10, c);
-        fill(204, 202, 0);
+      fill(204, 202, 0);
+      rect(b, c, 20, 20);
+      fill(0, 102, 153);
+      text(weapons[a].getname(), b - 10, c);
+      fill(204, 202, 0);
       }
-      if (isdown == false) {
-        if ((mouseX - weaponx < 30 && mouseX - weaponx > -30 && mouseY - weapony < 30 && mouseY - weapony > -30 && thechosen == weapons[a].getname()) || theweapon == weapons[a].getname()) {
+      if (isdown == false){
+        if ((mouseX - weaponx < 30 && mouseX - weaponx > -30 && mouseY - weapony < 30 && mouseY - weapony > -30 && thechosen == weapons[a].getname()) || theweapon == weapons[a].getname()){
           b = weaponx;
           c = weapony;
           theweapon = weapons[a].getname();
-        } else if (b != weaponx && c != weapony) {
+        }else if (b != weaponx && c != weapony){
           b = weapons[a].getx();
           c = weapons[a].gety();
         }
-        fill(204, 202, 0);
-        rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(weapons[a].getname(), b - 10, c);
-        fill(204, 202, 0);
-        isclicked = false;
+      fill(204, 202, 0);
+      rect(b, c, 20, 20);
+      fill(0, 102, 153);
+      text(weapons[a].getname(), b - 10, c);
+      fill(204, 202, 0);
+      isclicked = false;
       }
     }
   }
