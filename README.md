@@ -1,5 +1,14 @@
 1stTermFinalProject
 ===================    
+v.07 1/18/15
+Updates:    
+-mob spawns fully randomly generated along with images    
+
+v.06 1/17/15    
+Updates:    
+-added more pictures and images to be used    
+-started code for random mob spawns to no sucess    
+
 v.05 1/16/15    
 Updates:    
 -maps had been completely resized so they fit on other resolution screens    
