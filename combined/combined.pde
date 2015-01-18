@@ -1,12 +1,15 @@
 import java.io.*;
 import java.util.*;
 BufferedReader reader;
-String line;
-HelmetClass[] helms;
-ArmorClass[] armors;
-BootsClass[] bootss;
-WeaponClass[] weapons;
-ItemClass[] items;
+String[] line;
+ArrayList<HelmetClass> helms = new ArrayList<HelmetClass>(1);
+ArrayList<ArmorClass> armors = new ArrayList<ArmorClass>(1);
+ArrayList<BootsClass> bootss = new ArrayList<BootsClass>(1);
+ArrayList<WeaponClass> weapons = new ArrayList<WeaponClass>(1);
+HelmetClass[] possiblehelms;
+ArmorClass[] possiblearmors;
+BootsClass[] possiblebootss;
+WeaponClass[] possibleweapons;
 Mob[] themobs;
 String[] inbetween;
 int[] data;// data[0] = helmet, data[1] = armor, data[2] = boots, data[3] = weapon
@@ -21,7 +24,7 @@ float armorx = 1150;
 float armory = 170;
 float bootsx = 1150;
 float bootsy = 240;
-float weaponx = 1100;
+float weaponx = 1080;
 float weapony = 170;
 float settingx = 1000;
 float settingy = 350;
@@ -32,12 +35,12 @@ String thehelmet = "";
 String thearmor = "";
 String theboots = "";
 String theweapon = "";
-ItemClass[] stuff;
 int value = 0;
 int xvaluerect = 75;
 int yvaluerect = 25;
 int toMoveX = 0;
 int toMoveY = 0;
+int damage = 1;
 color w = 0;
 color a = 0;
 color s = 0;
@@ -74,26 +77,20 @@ void setup () {
   down = loadImage("down0.jpg");
   left = loadImage("left0.jpg");
   right = loadImage("right0.jpg");
-  playerHP = 10;
+  playerHP = 30;
   level = 1;
   mapname = "newmap1.jpg";
-  stuff = new ItemClass[10];
-  data = new int[4];
-  rectMode(RADIUS);
-  stuff[0] = new ItemClass();
-  data[0] = 1;
-  reader = createReader("thehelmet.txt"); 
-  loaditems(0);
-  initalizeitems();
+  rectMode(RADIUS); 
   themobs = new Mob[10];
   for (int a = 0; a < 10; a++) {
     themobs[a] = new Mob();
     randomCords(themobs[a]);
   }
+  loadpossibleitems();
 }
 
 void draw() {
-
+  initializeitems();
   mapname = "newmap" + Integer.toString(level) + ".jpg";
   toMove();
   blockUpdate();
@@ -102,8 +99,10 @@ void draw() {
   image(map, 0, 0);
   move(toMoveX, toMoveY);
   image(player, xvaluerect-25, yvaluerect-25);
+  rectMode(CORNER);
+  fill(90);
+  rect(1000, 0, 250, 750);
   rectMode(CENTER);
-
   toMoveX = 0;
   toMoveY = 0;
   if ((xvaluerect == 925) && (yvaluerect == 725)) {
@@ -116,12 +115,12 @@ void draw() {
       randomCords(themobs[a]);
     }
   }
-  printitems();  
   stroke(0);
-  rect(helmetx, helmety, 25, 25);
-  rect(armorx, armory, 25, 25);
-  rect(bootsx, bootsy, 25, 25);
-  rect(weaponx, weapony, 25, 25);
+  fill(204, 202, 0);
+  rect(helmetx, helmety, 50, 50);
+  rect(armorx, armory, 50, 50);
+  rect(bootsx, bootsy, 50, 50);
+  rect(weaponx, weapony, 50, 50);
   lockon();
   printitems();
   fill(#FF0000);
@@ -130,7 +129,6 @@ void draw() {
       themobs[a].draw();
     }
   }
-  print(s);
 }
 
 void delay(int delay)
@@ -242,8 +240,8 @@ void toMove() {
       }
     }
     if (w == -65536) {
-      for (int a = 0; a < 10; a++){
-        if(themobs[a].getX() == xvaluerect && themobs[a].getY() == yvaluerect - 50){
+      for (int a = 0; a < 10; a++) {
+        if (themobs[a].getX() == xvaluerect && themobs[a].getY() == yvaluerect - 50) {
           combat(themobs[a]);
         }
       }
@@ -264,8 +262,8 @@ void toMove() {
       }
     }
     if (a == -65536) {
-      for (int a = 0; a < 10; a++){
-        if(themobs[a].getX() == xvaluerect - 50 && themobs[a].getY() == yvaluerect){
+      for (int a = 0; a < 10; a++) {
+        if (themobs[a].getX() == xvaluerect - 50 && themobs[a].getY() == yvaluerect) {
           combat(themobs[a]);
         }
       }
@@ -286,8 +284,8 @@ void toMove() {
       }
     }
     if (s == -65536) {
-      for (int a = 0; a < 10; a++){
-        if(themobs[a].getX() == xvaluerect && themobs[a].getY() == yvaluerect + 50){
+      for (int a = 0; a < 10; a++) {
+        if (themobs[a].getX() == xvaluerect && themobs[a].getY() == yvaluerect + 50) {
           combat(themobs[a]);
         }
       }
@@ -308,8 +306,8 @@ void toMove() {
       }
     }
     if (d == -65536) {
-      for (int a = 0; a < 10; a++){
-        if(themobs[a].getX() == xvaluerect + 50 && themobs[a].getY() == yvaluerect){
+      for (int a = 0; a < 10; a++) {
+        if (themobs[a].getX() == xvaluerect + 50 && themobs[a].getY() == yvaluerect) {
           combat(themobs[a]);
         }
       }
@@ -321,16 +319,38 @@ void toMove() {
 
 void combat(Mob a) {
   print("\n\n\n\n");
-  int damage = 1;
   chance = int(random(100));
   if (chance > 30) {
     a.setHP(a.getHP() - damage);
   } else {
     print("You missed\n");
   }
-
+  if (chance > 50 && a.getHP() > 0){
+    playerHP -= a.getATK();
+  }
   print("Player: " + playerHP + " HP\n");
   print("Enemy: " + a.getHP() + " HP");
+  if (a.getHP() <= 0){
+    if (chance > 0){
+      int random1 = int(random(4));
+      if (random1 == 0){
+        int random2 = int(random(possiblehelms.length));
+        helms.add(new HelmetClass(possiblehelms[random2].getname()));
+      }
+      if (random1 == 1){
+        int random2 = int(random(possiblearmors.length));
+        armors.add(new ArmorClass(possiblearmors[random2].getname()));
+      }
+      if (random1 == 2){
+        int random2 = int(random(possiblebootss.length));
+        bootss.add(new BootsClass(possiblebootss[random2].getname()));
+      }
+      if (random1 == 3){
+        int random2 = int (random(possibleweapons.length));
+        weapons.add(new WeaponClass(possibleweapons[random2].getname()));
+      }
+    }
+  }
 }
 void mousePressed() {
   isdown = true;
@@ -344,245 +364,284 @@ void mouseReleased() {
   itemx = 0;
   itemy = 0;
 }
-void loaditems(int b) {
-  try {
-    line = reader.readLine();
-  } 
-  catch (Exception e) {
-    e.printStackTrace();
-    line = null;
-  }
-  if (line == null) {
-    // Stop reading because of an error or file is empty
-    print("nope");
-    noLoop();
-  } else {
-    inbetween = split(line, ",");
-    if (b == 0) {
-      helms = new HelmetClass[inbetween.length];
-    }
-    if (b == 1) {
-      armors = new ArmorClass[inbetween.length];
-    }
-    if (b == 2) {
-      bootss = new BootsClass[inbetween.length];
-    }
-    if (b == 3) {
-      weapons = new WeaponClass[inbetween.length];
-    }
-    for (int a = 0; a < inbetween.length; a++) {
-      if (b == 0) {
-        helms[a] = new HelmetClass(inbetween[a]);
+void loadpossibleitems() {
+  for(int b = 0; b < 4; b++){
+    if (b == 0){
+      line = loadStrings("thehelmets.txt");
+      inbetween = split(line[0], ",");
+      possiblehelms = new HelmetClass[inbetween.length];
+      for (int a = 0; a < inbetween.length; a++){
+        possiblehelms[a] = new HelmetClass(inbetween[a]);
       }
-      if (b == 1) {
-        armors[a] = new ArmorClass(inbetween[a]);
+    }
+    if (b == 1){
+      line = loadStrings("thearmors.txt");
+      inbetween = split(line[0], ",");
+      possiblearmors = new ArmorClass[inbetween.length];
+      for (int a = 0; a < inbetween.length; a++){
+        possiblearmors[a] = new ArmorClass(inbetween[a]);
       }
-      if (b == 2) {
-        bootss[a] = new BootsClass(inbetween[a]);
+    }
+    if (b == 2){
+      line = loadStrings("theboots.txt");
+      inbetween = split(line[0], ",");
+      possiblebootss = new BootsClass[inbetween.length];
+      for (int a = 0; a < inbetween.length; a++){
+        possiblebootss[a] = new BootsClass(inbetween[a]);
       }
-      if (b == 3) {
-        weapons[a] = new WeaponClass(inbetween[a]);
+    }
+    if (b == 3){
+      line = loadStrings("theweapons.txt");
+      inbetween = split(line[0], ",");
+      possibleweapons = new WeaponClass[inbetween.length];
+      for (int a = 0; a < inbetween.length; a++){
+        possibleweapons[a] = new WeaponClass(inbetween[a]);
       }
     }
   }
+      
 }
-void initalizeitems() {
-  if (helms != null && helms.length != 0) {
-    for (int b = 0; b < helms.length; b++) {
-      if (settingx < 1200) {
-        settingx += 50;
-      } else {
-        settingx = 1050;
-        settingy += 50;
+void initializeitems() {
+  if (helms.size() != 0) {
+    for (int b = 0; b < helms.size (); b++) {
+      if (helms.get(b).getbeenset() == false) {
+        if (settingx < 1200) {
+          settingx += 50;
+        } else {
+          settingx = 1050;
+          settingy += 50;
+        }
+        helms.get(b).setx(settingx);
+        helms.get(b).sety(settingy);
+        helms.get(b).setbeenset(true);
       }
-      helms[b].setx(settingx);
-      helms[b].sety(settingy);
     }
   }
-  if (armors != null && armors.length != 0) {
-    for (int b = 0; b < armors.length; b++) {
-      if (settingx < 1200) {
-        settingx += 50;
-      } else {
-        settingx = 1050;
-        settingy += 50;
+  if (armors.size() != 0) {
+    for (int b = 0; b < armors.size (); b++) {
+      if (armors.get(b).getbeenset() == false) {
+        if (settingx < 1200) {
+          settingx += 50;
+        } else {
+          settingx = 1050;
+          settingy += 50;
+        }
+        armors.get(b).setx(settingx);
+        armors.get(b).sety(settingy);
+        armors.get(b).setbeenset(true);
       }
-      armors[b].setx(settingx);
-      armors[b].sety(settingy);
     }
   }
-  if (bootss != null && bootss.length != 0) {
-    for (int b = 0; b < bootss.length; b++) {
-      if (settingx < 1200) {
-        settingx += 50;
-      } else {
-        settingx = 1050;
-        settingy += 50;
+  if (bootss.size() != 0) {
+    for (int b = 0; b < bootss.size (); b++) {
+      if (bootss.get(b).getbeenset() == false) {
+        if (settingx < 1200) {
+          settingx += 50;
+        } else {
+          settingx = 1050;
+          settingy += 50;
+        }
+        bootss.get(b).setx(settingx);
+        bootss.get(b).sety(settingy);
+        bootss.get(b).setbeenset(true);
       }
-      bootss[b].setx(settingx);
-      bootss[b].sety(settingy);
     }
   }
-  if (weapons != null && weapons.length != 0) {
-    for (int b = 0; b < weapons.length; b++) {
-      if (settingx < 1250) {
-        settingx += 50;
-      } else {
-        settingx = 1120;
-        settingy += 50;
+  if (weapons.size() != 0) {
+    for (int b = 0; b < weapons.size (); b++) {
+      if (weapons.get(b).getbeenset() == false) {
+        if (settingx < 1200) {
+          settingx += 50;
+        } else {
+          settingx = 1050;
+          settingy += 50;
+        }
+        weapons.get(b).setx(settingx);
+        weapons.get(b).sety(settingy);
+        weapons.get(b).setbeenset(true);
       }
-      weapons[b].setx(settingx);
-      weapons[b].sety(settingy);
     }
   }
 } 
 void printitems() {
   textSize(10);
-  if (helms != null && helms.length != 0) {
-    for (int a = 0; a < helms.length; a++) {
-      float b = helms[a].getx();
-      float c = helms[a].gety();
+  if (helms.size() != 0) {
+    for (int a = 0; a < helms.size (); a++) {
+      float b = helms.get(a).getx();
+      float c = helms.get(a).gety();
       if (isdown == true) {
         if (b - mouseX < 30 && b - mouseX > -30 && c - mouseY < 30 && c - mouseY > -30 && isclicked == false) {
           isclicked = true;
-          thechosen = helms[a].getname();
+          thechosen = helms.get(a).getname();
         }
-        if (thechosen == helms[a].getname()) {
+        if (thechosen == helms.get(a).getname()) {
           b = mouseX;
           c = mouseY;
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
         fill(0, 102, 153);
-        text(helms[a].getname(), b - 10, c);
+        text(helms.get(a).getname(), b - 10, c);
         fill(204, 202, 0);
+        imageMode(CENTER);
+        PImage theimage = loadImage("helm" + helms.get(a).getname() + ".png");
+        image(theimage, b, c);
+        imageMode(CORNER);
       }
       if (isdown == false) {
-        if ((mouseX - helmetx < 30 && mouseX - helmetx > -30 && mouseY - helmety < 30 && mouseY - helmety > -30 && thechosen == helms[a].getname()) || thehelmet == helms[a].getname()) {
+        if ((mouseX - helmetx < 30 && mouseX - helmetx > -30 && mouseY - helmety < 30 && mouseY - helmety > -30 && thechosen == helms.get(a).getname()) || thehelmet == helms.get(a).getname()) {
           b = helmetx;
           c = helmety;
-          thehelmet = helms[a].getname();
+          thehelmet = helms.get(a).getname();
         } else if (b != helmetx && c != helmety) {
-          b = helms[a].getx();
-          c = helms[a].gety();
+          b = helms.get(a).getx();
+          c = helms.get(a).gety();
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
         fill(0, 102, 153);
-        text(helms[a].getname(), b - 10, c);
+        text(helms.get(a).getname(), b - 10, c);
         fill(204, 202, 0);
         isclicked = false;
+        imageMode(CENTER);
+        PImage theimage = loadImage("helm" + helms.get(a).getname() + ".png");
+        image(theimage, b, c);
+        imageMode(CORNER);
       }
     }
   }
-  if (armors != null && armors.length != 0) {
-    for (int a = 0; a < armors.length; a++) {
-      float b = armors[a].getx();
-      float c = armors[a].gety();
+  if (armors != null && armors.size() != 0) {
+    for (int a = 0; a < armors.size (); a++) {
+      float b = armors.get(a).getx();
+      float c = armors.get(a).gety();
       if (isdown == true) {
         if (b - mouseX < 30 && b - mouseX > -30 && c - mouseY < 30 && c - mouseY > -30 && isclicked == false) {
           isclicked = true;
-          thechosen = armors[a].getname();
+          thechosen = armors.get(a).getname();
         }
-        if (thechosen == armors[a].getname()) {
+        if (thechosen == armors.get(a).getname()) {
           b = mouseX;
           c = mouseY;
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
         fill(0, 102, 153);
-        text(armors[a].getname(), b - 10, c);
+        text(armors.get(a).getname(), b - 10, c);
         fill(204, 202, 0);
+        imageMode(CENTER);
+        PImage theimage = loadImage("armor" + armors.get(a).getname() + ".png");
+        image(theimage, b, c);
+        imageMode(CORNER);
       }
       if (isdown == false) {
-        if ((mouseX - armorx < 30 && mouseX - armorx > -30 && mouseY - armory < 30 && mouseY - armory > -30 && thechosen == armors[a].getname()) || thearmor == armors[a].getname()) {
+        if ((mouseX - armorx < 30 && mouseX - armorx > -30 && mouseY - armory < 30 && mouseY - armory > -30 && thechosen == armors.get(a).getname()) || thearmor == armors.get(a).getname()) {
           b = armorx;
           c = armory;
-          thearmor = armors[a].getname();
+          thearmor = armors.get(a).getname();
         } else if (b != armorx && c != armory) {
-          b = armors[a].getx();
-          c = armors[a].gety();
+          b = armors.get(a).getx();
+          c = armors.get(a).gety();
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
         fill(0, 102, 153);
-        text(armors[a].getname(), b - 10, c);
+        text(armors.get(a).getname(), b - 10, c);
         fill(204, 202, 0);
         isclicked = false;
+        imageMode(CENTER);
+        PImage theimage = loadImage("armor" + armors.get(a).getname() + ".png");
+        image(theimage, b, c);
+        imageMode(CORNER);
       }
     }
   }
-  if (bootss != null && bootss.length != 0) {
-    for (int a = 0; a < bootss.length; a++) {
-      float b = bootss[a].getx();
-      float c = bootss[a].gety();
+  if (bootss != null && bootss.size() != 0) {
+    for (int a = 0; a < bootss.size (); a++) {
+      float b = bootss.get(a).getx();
+      float c = bootss.get(a).gety();
       if (isdown == true) {
         if (b - mouseX < 30 && b - mouseX > -30 && c - mouseY < 30 && c - mouseY > -30 && isclicked == false) {
           isclicked = true;
-          thechosen = bootss[a].getname();
+          thechosen = bootss.get(a).getname();
         }
-        if (thechosen == bootss[a].getname()) {
+        if (thechosen == bootss.get(a).getname()) {
           b = mouseX;
           c = mouseY;
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
         fill(0, 102, 153);
-        text(bootss[a].getname(), b - 10, c);
+        text(bootss.get(a).getname(), b - 10, c);
         fill(204, 202, 0);
+        imageMode(CENTER);
+        PImage theimage = loadImage("boots" + bootss.get(a).getname() + ".png");
+        image(theimage, b, c);
+        imageMode(CORNER);
       }
       if (isdown == false) {
-        if ((mouseX - bootsx < 30 && mouseX - bootsx > -30 && mouseY - bootsy < 30 && mouseY - bootsy > -30 && thechosen == bootss[a].getname()) || theboots == bootss[a].getname()) {
+        if ((mouseX - bootsx < 30 && mouseX - bootsx > -30 && mouseY - bootsy < 30 && mouseY - bootsy > -30 && thechosen == bootss.get(a).getname()) || theboots == bootss.get(a).getname()) {
           b = bootsx;
           c = bootsy;
-          theboots = bootss[a].getname();
+          theboots = bootss.get(a).getname();
         } else if (b != bootsx && c != bootsy) {
-          b = bootss[a].getx();
-          c = bootss[a].gety();
+          b = bootss.get(a).getx();
+          c = bootss.get(a).gety();
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
         fill(0, 102, 153);
-        text(bootss[a].getname(), b - 10, c);
+        text(bootss.get(a).getname(), b - 10, c);
         fill(204, 202, 0);
         isclicked = false;
+        imageMode(CENTER);
+        PImage theimage = loadImage("boots" + bootss.get(a).getname() + ".png");
+        image(theimage, b, c);
+        imageMode(CORNER);
       }
     }
   }
-  if (weapons != null && weapons.length != 0) {
-    for (int a = 0; a < weapons.length; a++) {
-      float b = weapons[a].getx();
-      float c = weapons[a].gety();
+  if (weapons != null && weapons.size() != 0) {
+    for (int a = 0; a < weapons.size (); a++) {
+      float b = weapons.get(a).getx();
+      float c = weapons.get(a).gety();
       if (isdown == true) {
         if (b - mouseX < 30 && b - mouseX > -30 && c - mouseY < 30 && c - mouseY > -30 && isclicked == false) {
           isclicked = true;
-          thechosen = weapons[a].getname();
+          thechosen = weapons.get(a).getname();
         }
-        if (thechosen == weapons[a].getname()) {
+        if (thechosen == weapons.get(a).getname()) {
           b = mouseX;
           c = mouseY;
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
         fill(0, 102, 153);
-        text(weapons[a].getname(), b - 10, c);
+        text(weapons.get(a).getname(), b - 10, c);
         fill(204, 202, 0);
+        imageMode(CENTER);
+        PImage theimage = loadImage("sword" + weapons.get(a).getname() + ".png");
+        image(theimage, b, c);
+        imageMode(CORNER);
       }
       if (isdown == false) {
-        if ((mouseX - weaponx < 30 && mouseX - weaponx > -30 && mouseY - weapony < 30 && mouseY - weapony > -30 && thechosen == weapons[a].getname()) || theweapon == weapons[a].getname()) {
+        if ((mouseX - weaponx < 30 && mouseX - weaponx > -30 && mouseY - weapony < 30 && mouseY - weapony > -30 && thechosen == weapons.get(a).getname()) || theweapon == weapons.get(a).getname()) {
           b = weaponx;
           c = weapony;
-          theweapon = weapons[a].getname();
+          theweapon = weapons.get(a).getname();
         } else if (b != weaponx && c != weapony) {
-          b = weapons[a].getx();
-          c = weapons[a].gety();
+          b = weapons.get(a).getx();
+          c = weapons.get(a).gety();
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);  
         fill(0, 102, 153);
-        text(weapons[a].getname(), b - 10, c);
+        text(weapons.get(a).getname(), b - 10, c);
         fill(204, 202, 0);
         isclicked = false;
+        imageMode(CENTER);
+        PImage theimage = loadImage("sword" + weapons.get(a).getname() + ".png");
+        image(theimage, b, c);
+        imageMode(CORNER);
       }
     }
   }

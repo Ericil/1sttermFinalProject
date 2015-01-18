@@ -21,7 +21,7 @@ class Mob {
     mobname = "mob" + Integer.toString(int(random(4) + 1)) + ".png";
   }
   Mob(){
-    this(0, 0, 10, 10);
+    this(0, 0, 10, 2);
     mobname = "mob" + Integer.toString(int(random(4) + 1)) + ".png";
   }
   void draw() {
