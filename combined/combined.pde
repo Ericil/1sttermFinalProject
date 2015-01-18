@@ -130,7 +130,7 @@ void draw() {
       themobs[a].draw();
     }
   }
-  print(level);
+  print(s);
 }
 
 void delay(int delay)
