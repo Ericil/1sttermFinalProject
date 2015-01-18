@@ -1,4 +1,3 @@
-/*
 class Mob {
   int X;
   int Y;
@@ -12,14 +11,11 @@ class Mob {
     return Y;
   }
 
-  Mob(int HP, int ATK) {
+  Mob(int x, int y, int HP, int ATK) {
     hp = HP;
     atk = ATK;
-    X = ((int(random(18)) + 1) * 50) +25;
-    Y = ((int(random(13)) + 1) * 50) +25;
-    print(X);
-    print(Y);
-    print("\n");
+    X = x;
+    Y = x;
   }
   void draw() {
     
@@ -36,4 +32,3 @@ class Mob {
     return atk;
   }
 }
-*/

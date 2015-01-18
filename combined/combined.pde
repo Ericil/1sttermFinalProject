@@ -44,7 +44,6 @@ color d = 0;
 PImage player;
 boolean locked;
 boolean[] keys;
-Mob m = new Mob(10, 10);
 PImage up;
 PImage down;
 PImage left;
@@ -55,6 +54,9 @@ int chance;
 int level;
 String mapname;
 int footstep = 1;
+Mob m = new Mob(X, Y, 10, 10);
+int X;
+int Y;
 void setup () {
   size(1250, 750);
   background(-1);
@@ -116,6 +118,7 @@ void draw() {
   lockon();
   printitems();
   fill(#FF0000);
+  randomCords();
 }
 
 void delay(int delay)
@@ -173,15 +176,15 @@ void wrapping() {
 }
 /*
 void Walls() {
-  for (int i = 0; i < 20; i++) {
-    insertWall(i, 0);
-    insertWall(0, i);
-    insertWall(19, i);
-    insertWall(i, 14);
-  }
-}
-
-void insertWall(int x, int y) {
+ for (int i = 0; i < 20; i++) {
+ insertWall(i, 0);
+ insertWall(0, i);
+ insertWall(19, i);
+ insertWall(i, 14);
+ }
+ }
+ 
+ void insertWall(int x, int y) {
  PImage wall = loadImage("wall.jpg");
  image(wall, x * 50, y * 50);
  }
@@ -206,13 +209,13 @@ void blockUpdate() {
 }
 /*
 void mouseClicked() {
-  if (get(mouseX, mouseY) == -1) {
-    insertWall(mouseX/50, mouseY/50);
-  } else {
-    insertSpace(mouseX/50, mouseY/50);
-  }
-}
-*/
+ if (get(mouseX, mouseY) == -1) {
+ insertWall(mouseX/50, mouseY/50);
+ } else {
+ insertSpace(mouseX/50, mouseY/50);
+ }
+ }
+ */
 void toMove() {
   if (keys[0]) {
     blockUpdate();
@@ -227,7 +230,7 @@ void toMove() {
       }
     }
     if (w == -65536) {
-      combat(m);
+      // combat(m);
     }
     player = up;
     keyClear();
@@ -245,7 +248,7 @@ void toMove() {
       }
     }
     if (a == -65536) {
-      combat(m);
+      //combat(m);
     }
     player = left;
     keyClear();
@@ -263,7 +266,7 @@ void toMove() {
       }
     }
     if (s == -65536) {
-      combat(m);
+      // combat(m);
     }
     player = down;
     keyClear();
@@ -281,7 +284,7 @@ void toMove() {
       }
     }
     if (d == -65536) {
-      combat(m);
+      //combat(m);
     }
     keyClear();
     player = right;
@@ -576,40 +579,14 @@ void lockon() {
   }
 }
 
-class Mob {
-  int X;
-  int Y;
-  int hp;
-  int atk;
-  boolean spawn = false;
-  public float getX() {
-    return X;
-  }
-  public float getY() {
-    return Y;
-  }
-
-  Mob(int HP, int ATK) {
-    hp = HP;
-    atk = ATK;
+void randomCords() {
+  boolean test = true;
+  while (test) {
     X = ((int(random(18)) + 1) * 50) +25;
     Y = ((int(random(13)) + 1) * 50) +25;
-    print(X);
-    print(Y);
-    print("\n" + get(X,Y));
-  }
-  void draw() {
-    
-    rect(X, Y, 50, 50);
-    fill(#FF0000);
-  }
-  int getHP() {
-    return hp;
-  }
-  void setHP(int x) {
-    hp = x;
-  }
-  int getATK(){
-    return atk;
+    if (get(X, Y) == -1) {
+      test = false;
+    }
   }
 }
+
