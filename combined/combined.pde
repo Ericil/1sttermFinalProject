@@ -7,6 +7,7 @@ ArmorClass[] armors;
 BootsClass[] bootss;
 WeaponClass[] weapons;
 ItemClass[] items;
+Mob[] themobs;
 String[] inbetween;
 int[] data;// data[0] = helmet, data[1] = armor, data[2] = boots, data[3] = weapon
 float itemx;
@@ -54,7 +55,6 @@ int chance;
 int level;
 String mapname;
 int footstep = 1;
-Mob m = new Mob(X, Y, 10, 10);
 int X;
 int Y;
 void setup () {
@@ -85,6 +85,11 @@ void setup () {
   reader = createReader("thehelmet.txt"); 
   loaditems(0);
   initalizeitems();
+  themobs = new Mob[10];
+  for (int a = 0; a < 10; a++) {
+    themobs[a] = new Mob();
+    randomCords(themobs[a]);
+  }
 }
 
 void draw() {
@@ -101,13 +106,15 @@ void draw() {
 
   toMoveX = 0;
   toMoveY = 0;
-  if (m.getHP() > 0) {
-    m.draw();
-  }
   if ((xvaluerect == 925) && (yvaluerect == 725)) {
     level++;
     xvaluerect = 75;
     yvaluerect = 25;
+    themobs = new Mob[10];
+    for (int a = 0; a < 10; a++) {
+      themobs[a] = new Mob();
+      randomCords(themobs[a]);
+    }
   }
   printitems();  
   stroke(0);
@@ -118,7 +125,11 @@ void draw() {
   lockon();
   printitems();
   fill(#FF0000);
-  randomCords();
+  for (int a = 0; a < themobs.length; a++) {
+    if (themobs[a].getHP() > 0) {
+      themobs[a].draw();
+    }
+  }
 }
 
 void delay(int delay)
@@ -230,7 +241,11 @@ void toMove() {
       }
     }
     if (w == -65536) {
-      // combat(m);
+      for (int a = 0; a < 10; a++){
+        if(themobs[a].getX() == xvaluerect && themobs[a].getY() == yvaluerect - 50){
+          combat(themobs[a]);
+        }
+      }
     }
     player = up;
     keyClear();
@@ -248,7 +263,11 @@ void toMove() {
       }
     }
     if (a == -65536) {
-      //combat(m);
+      for (int a = 0; a < 10; a++){
+        if(themobs[a].getX() == xvaluerect - 50 && themobs[a].getY() == yvaluerect){
+          combat(themobs[a]);
+        }
+      }
     }
     player = left;
     keyClear();
@@ -266,7 +285,11 @@ void toMove() {
       }
     }
     if (s == -65536) {
-      // combat(m);
+      for (int a = 0; a < 10; a++){
+        if(themobs[a].getX() == xvaluerect && themobs[a].getY() == yvaluerect + 50){
+          combat(themobs[a]);
+        }
+      }
     }
     player = down;
     keyClear();
@@ -284,7 +307,11 @@ void toMove() {
       }
     }
     if (d == -65536) {
-      //combat(m);
+      for (int a = 0; a < 10; a++){
+        if(themobs[a].getX() == xvaluerect + 50 && themobs[a].getY() == yvaluerect){
+          combat(themobs[a]);
+        }
+      }
     }
     keyClear();
     player = right;
@@ -579,13 +606,15 @@ void lockon() {
   }
 }
 
-void randomCords() {
+void randomCords(Mob a) {
   boolean test = true;
   while (test) {
     X = ((int(random(18)) + 1) * 50) +25;
     Y = ((int(random(13)) + 1) * 50) +25;
     if (get(X, Y) == -1) {
       test = false;
+      a.setX(X);
+      a.setY(Y);
     }
   }
 }

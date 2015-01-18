@@ -10,12 +10,15 @@ class Mob {
   public float getY() {
     return Y;
   }
-
+  
   Mob(int x, int y, int HP, int ATK) {
     hp = HP;
     atk = ATK;
     X = x;
     Y = x;
+  }
+  Mob(){
+    this(0, 0, 10, 10);
   }
   void draw() {
     
@@ -25,10 +28,19 @@ class Mob {
   int getHP() {
     return hp;
   }
+  int getATK(){
+    return atk;
+  }
   void setHP(int x) {
     hp = x;
   }
-  int getATK(){
-    return atk;
+  void setX(int a){
+    X = a;
+  }
+  void setY(int a){
+    Y = a;
+  }
+  void setatk(int a){
+    atk = a;
   }
 }
