@@ -61,9 +61,14 @@ String mapname;
 int footstep = 1;
 int X;
 int Y;
+PImage start;
+PImage dead;
+PImage win;
 void setup () {
   size(1250, 850);
   background(-1);
+  xvaluerect = 75;
+  yvaluerect = 25;
   player = loadImage("down0.jpg");
   PImage img;
   img = loadImage("newmap1.jpg");
@@ -78,11 +83,14 @@ void setup () {
   down = loadImage("down0.jpg");
   left = loadImage("left0.jpg");
   right = loadImage("right0.jpg");
-  playerHP = 40;
+  start = loadImage("startscreen1.jpg");
+  dead = loadImage("deadscreen1.jpg");
+  win = loadImage("win1.jpg");
+  playerHP = 500;
   chance = 30;
   armor = 1;
-  damage = 2;
-  level = 1;
+  damage = 200;
+  level = 0;
   mapname = "newmap1.jpg";
   rectMode(RADIUS); 
   themobs = new Mob[10];
@@ -91,6 +99,10 @@ void setup () {
     randomCords(themobs[a]);
   }
   loadpossibleitems();
+  helms = new ArrayList<HelmetClass>(1);
+  armors = new ArrayList<ArmorClass>(1);
+  bootss = new ArrayList<BootsClass>(1);
+  weapons = new ArrayList<WeaponClass>(1);
   helms.add(new HelmetClass(possiblehelms[0].getname()));
   armors.add(new ArmorClass(possiblearmors[0].getname()));
   bootss.add(new BootsClass(possiblebootss[0].getname()));
@@ -98,58 +110,22 @@ void setup () {
 }
 
 void draw() {
-  if ((xvaluerect == 925) && (yvaluerect == 725)) {
-    level++;
-    mapname = "newmap" + Integer.toString(level) + ".jpg";
-    map = loadImage(mapname);
-    image(map, 0, 0);
-    xvaluerect = 75;
-    yvaluerect = 25;
-    themobs = new Mob[10];
-    for (int a = 0; a < 10; a++) {
-      themobs[a] = new Mob();
-      randomCords(themobs[a]);
+  if (level == 0) {
+    image(start, 0, 0);
+    if (keyPressed) {
+      level = 10;
+    }
+  } else {
+    runGame();
+  }
+
+  if (playerHP < 1) {
+    background(-1);
+    image(dead, 0, 0);
+    if (mousePressed) {
+      setup();
     }
   }
-  initializeitems();
-  mapname = "newmap" + Integer.toString(level) + ".jpg";
-  toMove();
-  blockUpdate();
-  background(-1);
-  map = loadImage(mapname);
-  image(map, 0, 0);
-  move(toMoveX, toMoveY);
-  image(player, xvaluerect-25, yvaluerect-25);
-  rectMode(CORNER);
-  fill(90);
-  rect(1000, 0, 250, 750);
-  fill(0);
-  rect(0, 750, 1250, 100);
-  textSize(15);
-  fill(-1);
-  text("Weapon damage: " + damage, 20, 770);
-  text("Armor: " + armor, 20, 790);
-  text("Health: " + playerHP, 20, 810);
-  text("Hit chance: " + chance, 20, 830);
-  rectMode(CENTER);
-  toMoveX = 0;
-  toMoveY = 0;
-  stroke(0);
-  fill(204, 202, 0);
-  rect(helmetx, helmety, 50, 50);
-  rect(armorx, armory, 50, 50);
-  rect(bootsx, bootsy, 50, 50);
-  rect(weaponx, weapony, 50, 50);
-  lockon();
-  printitems();
-  fill(#FF0000);
-  for (int a = 0; a < themobs.length; a++) {
-    if (themobs[a].getHP() > 0) {
-      themobs[a].draw();
-    }
-  }
-  modifystats();
-  println(thehelmet);
 }
 
 void delay(int delay)
@@ -498,7 +474,7 @@ void printitems() {
           b = mouseX;
           c = mouseY;
         }
-        if (helms.get(a).getname() == thehelmet){
+        if (helms.get(a).getname() == thehelmet) {
           b = helmetx;
           c = helmety;
         }
@@ -547,7 +523,7 @@ void printitems() {
           b = mouseX;
           c = mouseY;
         }
-        if (armors.get(a).getname() == thearmor){
+        if (armors.get(a).getname() == thearmor) {
           b = armorx;
           c = armory;
         }
@@ -596,7 +572,7 @@ void printitems() {
           b = mouseX;
           c = mouseY;
         }
-        if (bootss.get(a).getname() == theboots){
+        if (bootss.get(a).getname() == theboots) {
           b = bootsx;
           c = bootsy;
         }
@@ -645,7 +621,7 @@ void printitems() {
           b = mouseX;
           c = mouseY;
         }
-        if (weapons.get(a).getname() == theweapon){
+        if (weapons.get(a).getname() == theweapon) {
           b = weaponx;
           c = weapony;
         }
@@ -714,92 +690,163 @@ void randomCords(Mob a) {
     }
   }
 }
-void modifystats(){
-  if (thehelmet.equals("1")){
+void modifystats() {
+  if (thehelmet.equals("1")) {
     chance = 35;
   }
-  if (thehelmet.equals("2")){
+  if (thehelmet.equals("2")) {
     chance = 40;
   }
-  if (thehelmet.equals("3")){
+  if (thehelmet.equals("3")) {
     chance = 45;
   }
-  if (thehelmet.equals("4")){
+  if (thehelmet.equals("4")) {
     chance = 50;
   }
-  if (thehelmet.equals("5")){
+  if (thehelmet.equals("5")) {
     chance = 55;
   }
-  if (thehelmet.equals("6")){
+  if (thehelmet.equals("6")) {
     chance = 60;
   }
-  if (thearmor.equals("1")){
+  if (thearmor.equals("1")) {
     armor = 3;
   }
-  if (thearmor.equals("2")){
+  if (thearmor.equals("2")) {
     armor = 4;
   }
-  if (thearmor.equals("3")){
+  if (thearmor.equals("3")) {
     armor = 5;
   }
-  if (thearmor.equals("4")){
+  if (thearmor.equals("4")) {
     armor = 6;
   }
-  if (thearmor.equals("5")){
+  if (thearmor.equals("5")) {
     armor = 7;
   }
-  if (thearmor.equals("6")){
+  if (thearmor.equals("6")) {
     armor = 8;
   }
-  if (thearmor.equals("7")){
+  if (thearmor.equals("7")) {
     armor = 9;
   }
-  if (thearmor.equals("8")){
+  if (thearmor.equals("8")) {
     armor = 10;
   }
-  if (theweapon.equals("1")){
+  if (theweapon.equals("1")) {
     damage = 3;
   }
-  if (theweapon.equals("2")){
+  if (theweapon.equals("2")) {
     damage = 4;
   }
-  if (theweapon.equals("3")){
+  if (theweapon.equals("3")) {
     damage = 5;
   }
-  if (theweapon.equals("4")){
+  if (theweapon.equals("4")) {
     damage = 6;
   }
-  if (theweapon.equals("5")){
+  if (theweapon.equals("5")) {
     damage = 7;
   }
-  if (theweapon.equals("6")){
+  if (theweapon.equals("6")) {
     damage = 8;
   }
-  if (theweapon.equals("7")){
+  if (theweapon.equals("7")) {
     damage = 9;
   }
-  if (theweapon.equals("8")){
+  if (theweapon.equals("8")) {
     damage = 10;
   }
-  if (theweapon.equals("9")){
+  if (theweapon.equals("9")) {
     damage = 11;
   }
-  if (theweapon.equals("10")){
+  if (theweapon.equals("10")) {
     damage = 12;
   }
-  if (theweapon.equals("11")){
+  if (theweapon.equals("11")) {
     damage = 13;
   }
-  if (theweapon.equals("12")){
+  if (theweapon.equals("12")) {
     damage = 14;
   }
-  if (theweapon.equals("13")){
+  if (theweapon.equals("13")) {
     damage = 15;
   }
-  if (theweapon.equals("14")){
+  if (theweapon.equals("14")) {
     damage = 16;
   }
-  if (theweapon.equals("15")){
+  if (theweapon.equals("15")) {
     damage = 18;
   }
 }
+
+void runGame() {
+  if ((xvaluerect == 925) && (yvaluerect == 725)) {
+    level++;
+    print(level);
+    mapname = "newmap" + Integer.toString(level) + ".jpg";
+    map = loadImage(mapname);
+    if (level == 11) {
+      image(win, 0, 0);
+      if (mousePressed) {
+        setup();
+      }
+    } else {
+      image(map, 0, 0);
+      xvaluerect = 75;
+      yvaluerect = 25;
+      themobs = new Mob[10];
+      for (int a = 0; a < 10; a++) {
+        themobs[a] = new Mob();
+        randomCords(themobs[a]);
+      }
+    }
+  } else {
+    initializeitems();
+    mapname = "newmap" + Integer.toString(level) + ".jpg";
+    toMove();
+    blockUpdate();
+    background(-1);
+    map = loadImage(mapname);
+    if (level == 11) {
+      image(win, 0, 0);
+      if (mousePressed) {
+        setup();
+      }
+    }
+    image(map, 0, 0);
+    move(toMoveX, toMoveY);
+    image(player, xvaluerect-25, yvaluerect-25);
+    rectMode(CORNER);
+    fill(90);
+    rect(1000, 0, 250, 750);
+    fill(0);
+    rect(0, 750, 1250, 100);
+    textSize(15);
+    fill(-1);
+    text("Weapon damage: " + damage, 20, 770);
+    text("Armor: " + armor, 20, 790);
+    text("Health: " + playerHP, 20, 810);
+    text("Hit chance: " + chance, 20, 830);
+    rectMode(CENTER);
+    toMoveX = 0;
+    toMoveY = 0;
+    stroke(0);
+    fill(204, 202, 0);
+    rect(helmetx, helmety, 50, 50);
+    rect(armorx, armory, 50, 50);
+    rect(bootsx, bootsy, 50, 50);
+    rect(weaponx, weapony, 50, 50);
+    lockon();
+    printitems();
+    fill(#FF0000);
+    for (int a = 0; a < themobs.length; a++) {
+      if (themobs[a].getHP() > 0) {
+        themobs[a].draw();
+      }
+    }
+    modifystats();
+    println(thehelmet);
+  }
+}
+
