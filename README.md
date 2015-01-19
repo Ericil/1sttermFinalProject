@@ -1,5 +1,15 @@
 1stTermFinalProject
 ===================    
+v.08 1/20/15
+Updates:
+-inventory system working!!!!!    
+-mobs drop items    
+-a lot of different swords, helmets, armors, boots    
+-maps lead to one another    
+Bugfixes:
+-mobs don’t spawn on top of maps    
+-inventory actually works    
+
 v.07 1/18/15
 Updates:    
 -mob spawns fully randomly generated along with images    
@@ -22,9 +32,9 @@ v.04 1/14/15
 Updates:    
 -Inventory almost completely done    
 -started combat code    
-
 Bugfixes:    
 -fixed player moving through walls in both scenarios    
+
 v.03.1 1/10/15    
 Bugs:    
 -player can move through walls horizontally if keys are pressed together    

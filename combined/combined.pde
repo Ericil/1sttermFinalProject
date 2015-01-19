@@ -61,7 +61,7 @@ int footstep = 1;
 int X;
 int Y;
 void setup () {
-  size(1250, 750);
+  size(1250, 850);
   background(-1);
   player = loadImage("down0.jpg");
   PImage img;
@@ -115,10 +115,17 @@ void draw() {
   rectMode(CORNER);
   fill(90);
   rect(1000, 0, 250, 750);
+  fill(0);
+  rect(0, 750, 1250, 100);
+  textSize(15);
+  fill(-1);
+  text("Weapon damage: ", 20, 770);
+  text("Armor: ", 20, 790);
+  text("Health: ", 20, 810);
+  text("Hit chance: ", 20, 830);
   rectMode(CENTER);
   toMoveX = 0;
   toMoveY = 0;
-
   stroke(0);
   fill(204, 202, 0);
   rect(helmetx, helmety, 50, 50);
