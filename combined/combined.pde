@@ -36,8 +36,8 @@ String thearmor = "";
 String theboots = "";
 String theweapon = "";
 int value = 0;
-int xvaluerect = 75;
-int yvaluerect = 25;
+int xvaluerect = 75; //75
+int yvaluerect = 25; //25
 int toMoveX = 0;
 int toMoveY = 0;
 color w = 0;
@@ -65,6 +65,10 @@ PImage start;
 PImage dead;
 PImage win;
 void setup () {
+  helms = new ArrayList<HelmetClass>(1);
+  armors = new ArrayList<ArmorClass>(1);
+  bootss = new ArrayList<BootsClass>(1);
+  weapons = new ArrayList<WeaponClass>(1);
   size(1250, 850);
   background(-1);
   xvaluerect = 75;
@@ -86,10 +90,10 @@ void setup () {
   start = loadImage("startscreen1.jpg");
   dead = loadImage("deadscreen1.jpg");
   win = loadImage("win1.jpg");
-  playerHP = 500;
+  playerHP = 50;
   chance = 30;
   armor = 1;
-  damage = 200;
+  damage = 1;
   level = 0;
   mapname = "newmap1.jpg";
   rectMode(RADIUS); 
@@ -99,10 +103,6 @@ void setup () {
     randomCords(themobs[a]);
   }
   loadpossibleitems();
-  helms = new ArrayList<HelmetClass>(1);
-  armors = new ArrayList<ArmorClass>(1);
-  bootss = new ArrayList<BootsClass>(1);
-  weapons = new ArrayList<WeaponClass>(1);
   helms.add(new HelmetClass(possiblehelms[0].getname()));
   armors.add(new ArmorClass(possiblearmors[0].getname()));
   bootss.add(new BootsClass(possiblebootss[0].getname()));
@@ -110,10 +110,18 @@ void setup () {
 }
 
 void draw() {
-  if (level == 0) {
+  if (level == 11) {
+    background(1);         
+    image(win, 0, 0);      
+    if (mousePressed) {
+      setup();
+    }
+  } else
+    if (level == 0) {
     image(start, 0, 0);
     if (keyPressed) {
-      level = 10;
+      setup();
+      level = 1;
     }
   } else {
     runGame();
@@ -783,15 +791,15 @@ void modifystats() {
 void runGame() {
   if ((xvaluerect == 925) && (yvaluerect == 725)) {
     level++;
-    print(level);
     mapname = "newmap" + Integer.toString(level) + ".jpg";
-    map = loadImage(mapname);
     if (level == 11) {
+      background(1);    
       image(win, 0, 0);
       if (mousePressed) {
         setup();
       }
     } else {
+      map = loadImage(mapname);
       image(map, 0, 0);
       xvaluerect = 75;
       yvaluerect = 25;
@@ -808,12 +816,6 @@ void runGame() {
     blockUpdate();
     background(-1);
     map = loadImage(mapname);
-    if (level == 11) {
-      image(win, 0, 0);
-      if (mousePressed) {
-        setup();
-      }
-    }
     image(map, 0, 0);
     move(toMoveX, toMoveY);
     image(player, xvaluerect-25, yvaluerect-25);
