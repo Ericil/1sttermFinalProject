@@ -40,7 +40,6 @@ int xvaluerect = 75;
 int yvaluerect = 25;
 int toMoveX = 0;
 int toMoveY = 0;
-int damage = 1;
 color w = 0;
 color a = 0;
 color s = 0;
@@ -55,6 +54,8 @@ PImage right;
 PImage map;
 int playerHP;
 int chance;
+int damage;
+int armor;
 int level;
 String mapname;
 int footstep = 1;
@@ -77,7 +78,10 @@ void setup () {
   down = loadImage("down0.jpg");
   left = loadImage("left0.jpg");
   right = loadImage("right0.jpg");
-  playerHP = 30;
+  playerHP = 40;
+  chance = 30;
+  armor = 1;
+  damage = 2;
   level = 1;
   mapname = "newmap1.jpg";
   rectMode(RADIUS); 
@@ -87,6 +91,10 @@ void setup () {
     randomCords(themobs[a]);
   }
   loadpossibleitems();
+  helms.add(new HelmetClass(possiblehelms[0].getname()));
+  armors.add(new ArmorClass(possiblearmors[0].getname()));
+  bootss.add(new BootsClass(possiblebootss[0].getname()));
+  weapons.add(new WeaponClass(possibleweapons[0].getname()));
 }
 
 void draw() {
@@ -119,10 +127,10 @@ void draw() {
   rect(0, 750, 1250, 100);
   textSize(15);
   fill(-1);
-  text("Weapon damage: ", 20, 770);
-  text("Armor: ", 20, 790);
-  text("Health: ", 20, 810);
-  text("Hit chance: ", 20, 830);
+  text("Weapon damage: " + damage, 20, 770);
+  text("Armor: " + armor, 20, 790);
+  text("Health: " + playerHP, 20, 810);
+  text("Hit chance: " + chance, 20, 830);
   rectMode(CENTER);
   toMoveX = 0;
   toMoveY = 0;
@@ -140,6 +148,8 @@ void draw() {
       themobs[a].draw();
     }
   }
+  modifystats();
+  println(thehelmet);
 }
 
 void delay(int delay)
@@ -330,14 +340,14 @@ void toMove() {
 
 void combat(Mob a) {
   print("\n\n\n\n");
-  chance = int(random(100));
-  if (chance > 30) {
+  int randomly = int(random(100));
+  if (chance > randomly) {
     a.setHP(a.getHP() - damage);
   } else {
     print("You missed\n");
   }
-  if (chance > 50 && a.getHP() > 0) {
-    playerHP -= a.getATK();
+  if (randomly > 50 && a.getHP() > 0) {
+    playerHP = playerHP -  (a.getATK() - armor);
   }
   print("Player: " + playerHP + " HP\n");
   print("Enemy: " + a.getHP() + " HP");
@@ -484,9 +494,13 @@ void printitems() {
           isclicked = true;
           thechosen = helms.get(a).getname();
         }
-        if (thechosen == helms.get(a).getname()) {
+        if (thechosen == helms.get(a).getname() && thehelmet != helms.get(a).getname()) {
           b = mouseX;
           c = mouseY;
+        }
+        if (helms.get(a).getname() == thehelmet){
+          b = helmetx;
+          c = helmety;
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
@@ -529,9 +543,13 @@ void printitems() {
           isclicked = true;
           thechosen = armors.get(a).getname();
         }
-        if (thechosen == armors.get(a).getname()) {
+        if (thechosen == armors.get(a).getname() && thearmor != armors.get(a).getname()) {
           b = mouseX;
           c = mouseY;
+        }
+        if (armors.get(a).getname() == thearmor){
+          b = armorx;
+          c = armory;
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
@@ -574,9 +592,13 @@ void printitems() {
           isclicked = true;
           thechosen = bootss.get(a).getname();
         }
-        if (thechosen == bootss.get(a).getname()) {
+        if (thechosen == bootss.get(a).getname() && bootss.get(a).getname() != theboots) {
           b = mouseX;
           c = mouseY;
+        }
+        if (bootss.get(a).getname() == theboots){
+          b = bootsx;
+          c = bootsy;
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
@@ -619,9 +641,13 @@ void printitems() {
           isclicked = true;
           thechosen = weapons.get(a).getname();
         }
-        if (thechosen == weapons.get(a).getname()) {
+        if (thechosen == weapons.get(a).getname()&& theweapon != weapons.get(a).getname()) {
           b = mouseX;
           c = mouseY;
+        }
+        if (weapons.get(a).getname() == theweapon){
+          b = weaponx;
+          c = weapony;
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
@@ -688,4 +714,92 @@ void randomCords(Mob a) {
     }
   }
 }
-
+void modifystats(){
+  if (thehelmet.equals("1")){
+    chance = 35;
+  }
+  if (thehelmet.equals("2")){
+    chance = 40;
+  }
+  if (thehelmet.equals("3")){
+    chance = 45;
+  }
+  if (thehelmet.equals("4")){
+    chance = 50;
+  }
+  if (thehelmet.equals("5")){
+    chance = 55;
+  }
+  if (thehelmet.equals("6")){
+    chance = 60;
+  }
+  if (thearmor.equals("1")){
+    armor = 3;
+  }
+  if (thearmor.equals("2")){
+    armor = 4;
+  }
+  if (thearmor.equals("3")){
+    armor = 5;
+  }
+  if (thearmor.equals("4")){
+    armor = 6;
+  }
+  if (thearmor.equals("5")){
+    armor = 7;
+  }
+  if (thearmor.equals("6")){
+    armor = 8;
+  }
+  if (thearmor.equals("7")){
+    armor = 9;
+  }
+  if (thearmor.equals("8")){
+    armor = 10;
+  }
+  if (theweapon.equals("1")){
+    damage = 3;
+  }
+  if (theweapon.equals("2")){
+    damage = 4;
+  }
+  if (theweapon.equals("3")){
+    damage = 5;
+  }
+  if (theweapon.equals("4")){
+    damage = 6;
+  }
+  if (theweapon.equals("5")){
+    damage = 7;
+  }
+  if (theweapon.equals("6")){
+    damage = 8;
+  }
+  if (theweapon.equals("7")){
+    damage = 9;
+  }
+  if (theweapon.equals("8")){
+    damage = 10;
+  }
+  if (theweapon.equals("9")){
+    damage = 11;
+  }
+  if (theweapon.equals("10")){
+    damage = 12;
+  }
+  if (theweapon.equals("11")){
+    damage = 13;
+  }
+  if (theweapon.equals("12")){
+    damage = 14;
+  }
+  if (theweapon.equals("13")){
+    damage = 15;
+  }
+  if (theweapon.equals("14")){
+    damage = 16;
+  }
+  if (theweapon.equals("15")){
+    damage = 18;
+  }
+}

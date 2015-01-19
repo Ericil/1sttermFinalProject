@@ -1,6 +1,17 @@
 1stTermFinalProject
 ===================    
-v.08 1/20/15
+v.091 1/20/15    
+Updates:    
+-GUI at the bottom displaying health, armor, damage, and hit chance    
+-the above things are modified by the weapons, helmets, boots, and armors(boots currently does nothing)    
+Bugs:
+-if you have too much armor, you gain HP from fighting mobs, will fix tonight
+-boots doesn’t do anything, not yet at least
+-items of the same name and is equipped stack on top of the equipped slot
+Bugfixes:
+-the currently equipped item does not go back to it’s original position when another item is selected
+
+v.08 1/20/15    
 Updates:
 -inventory system working!!!!!    
 -mobs drop items    
