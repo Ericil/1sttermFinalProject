@@ -90,6 +90,19 @@ void setup () {
 }
 
 void draw() {
+  if ((xvaluerect == 925) && (yvaluerect == 725)) {
+    level++;
+    mapname = "newmap" + Integer.toString(level) + ".jpg";
+    map = loadImage(mapname);
+    image(map, 0, 0);
+    xvaluerect = 75;
+    yvaluerect = 25;
+    themobs = new Mob[10];
+    for (int a = 0; a < 10; a++) {
+      themobs[a] = new Mob();
+      randomCords(themobs[a]);
+    }
+  }
   initializeitems();
   mapname = "newmap" + Integer.toString(level) + ".jpg";
   toMove();
@@ -105,16 +118,7 @@ void draw() {
   rectMode(CENTER);
   toMoveX = 0;
   toMoveY = 0;
-  if ((xvaluerect == 925) && (yvaluerect == 725)) {
-    level++;
-    xvaluerect = 75;
-    yvaluerect = 25;
-    themobs = new Mob[10];
-    for (int a = 0; a < 10; a++) {
-      themobs[a] = new Mob();
-      randomCords(themobs[a]);
-    }
-  }
+
   stroke(0);
   fill(204, 202, 0);
   rect(helmetx, helmety, 50, 50);
@@ -325,27 +329,27 @@ void combat(Mob a) {
   } else {
     print("You missed\n");
   }
-  if (chance > 50 && a.getHP() > 0){
+  if (chance > 50 && a.getHP() > 0) {
     playerHP -= a.getATK();
   }
   print("Player: " + playerHP + " HP\n");
   print("Enemy: " + a.getHP() + " HP");
-  if (a.getHP() <= 0){
-    if (chance > 0){
+  if (a.getHP() <= 0) {
+    if (chance > 0) {
       int random1 = int(random(4));
-      if (random1 == 0){
+      if (random1 == 0) {
         int random2 = int(random(possiblehelms.length));
         helms.add(new HelmetClass(possiblehelms[random2].getname()));
       }
-      if (random1 == 1){
+      if (random1 == 1) {
         int random2 = int(random(possiblearmors.length));
         armors.add(new ArmorClass(possiblearmors[random2].getname()));
       }
-      if (random1 == 2){
+      if (random1 == 2) {
         int random2 = int(random(possiblebootss.length));
         bootss.add(new BootsClass(possiblebootss[random2].getname()));
       }
-      if (random1 == 3){
+      if (random1 == 3) {
         int random2 = int (random(possibleweapons.length));
         weapons.add(new WeaponClass(possibleweapons[random2].getname()));
       }
@@ -365,41 +369,40 @@ void mouseReleased() {
   itemy = 0;
 }
 void loadpossibleitems() {
-  for(int b = 0; b < 4; b++){
-    if (b == 0){
+  for (int b = 0; b < 4; b++) {
+    if (b == 0) {
       line = loadStrings("thehelmets.txt");
       inbetween = split(line[0], ",");
       possiblehelms = new HelmetClass[inbetween.length];
-      for (int a = 0; a < inbetween.length; a++){
+      for (int a = 0; a < inbetween.length; a++) {
         possiblehelms[a] = new HelmetClass(inbetween[a]);
       }
     }
-    if (b == 1){
+    if (b == 1) {
       line = loadStrings("thearmors.txt");
       inbetween = split(line[0], ",");
       possiblearmors = new ArmorClass[inbetween.length];
-      for (int a = 0; a < inbetween.length; a++){
+      for (int a = 0; a < inbetween.length; a++) {
         possiblearmors[a] = new ArmorClass(inbetween[a]);
       }
     }
-    if (b == 2){
+    if (b == 2) {
       line = loadStrings("theboots.txt");
       inbetween = split(line[0], ",");
       possiblebootss = new BootsClass[inbetween.length];
-      for (int a = 0; a < inbetween.length; a++){
+      for (int a = 0; a < inbetween.length; a++) {
         possiblebootss[a] = new BootsClass(inbetween[a]);
       }
     }
-    if (b == 3){
+    if (b == 3) {
       line = loadStrings("theweapons.txt");
       inbetween = split(line[0], ",");
       possibleweapons = new WeaponClass[inbetween.length];
-      for (int a = 0; a < inbetween.length; a++){
+      for (int a = 0; a < inbetween.length; a++) {
         possibleweapons[a] = new WeaponClass(inbetween[a]);
       }
     }
   }
-      
 }
 void initializeitems() {
   if (helms.size() != 0) {
