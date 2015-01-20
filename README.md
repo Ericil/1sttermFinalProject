@@ -1,5 +1,15 @@
 1stTermFinalProject
 ===================    
+v.092 1/20/15    
+Updates:    
+-GUI for combat    
+-start, end, and death screens    
+Bugs:    
+-boots still does nothing    
+-armor op    
+Bugfixes:    
+-items do not stack (you can’t get two of the same items)    
+
 v.091 1/20/15    
 Updates:    
 -GUI at the bottom displaying health, armor, damage, and hit chance    
