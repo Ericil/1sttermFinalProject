@@ -276,7 +276,7 @@ void toMove() {
         }
       }
       if (level == 10){
-        if (themobs[10].getX() == xvaluerect + 50 && themobs[10].getY() == yvaluerect) {
+        if (themobs[10].getX() == xvaluerect && themobs[10].getY() == yvaluerect - 50) {
           combat(themobs[10]);
         }
       }
@@ -306,7 +306,7 @@ void toMove() {
         }
       }
       if (level == 10){
-        if (themobs[10].getX() == xvaluerect + 50 && themobs[10].getY() == yvaluerect) {
+        if (themobs[10].getX() == xvaluerect - 50 && themobs[10].getY() == yvaluerect) {
           combat(themobs[10]);
         }
       }
@@ -336,7 +336,7 @@ void toMove() {
         }
       }
       if (level == 10){
-        if (themobs[10].getX() == xvaluerect + 50 && themobs[10].getY() == yvaluerect) {
+        if (themobs[10].getX() == xvaluerect && themobs[10].getY() == yvaluerect + 50) {
           combat(themobs[10]);
         }
       }
