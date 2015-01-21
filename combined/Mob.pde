@@ -31,6 +31,9 @@ class Mob {
     pic = loadImage(mobname);
     image(pic,X-25,Y-25);
   }
+  String getmobname(){
+    return mobname;
+  }
   int getHP() {
     return hp;
   }
@@ -48,5 +51,8 @@ class Mob {
   }
   void setatk(float a){
     atk = a;
+  }
+  void setmobname(String a){
+    mobname = a;
   }
 }

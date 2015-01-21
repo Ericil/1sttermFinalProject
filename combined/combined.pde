@@ -142,7 +142,7 @@ void draw() {
     }
   } else if (level == 0 && intro == false) {
     image(start, 0, 0);
-    if(keyPressed){
+    if (keyPressed) {
       intro = true;
     }
   } else {
@@ -256,7 +256,10 @@ void mouseClicked() {
 void toMove() {
   if (keys[0]) {
     blockUpdate();
-    if (w == -1) {   
+    if (w == -1) {
+      damagedealt = "";
+      damagetaken = "";
+      mobhp = "";
       toMoveY = -50; //up
       if (footstep == 1) {
         up = loadImage("up1.jpg");
@@ -272,6 +275,11 @@ void toMove() {
           combat(themobs[a]);
         }
       }
+      if (level == 10){
+        if (themobs[10].getX() == xvaluerect + 50 && themobs[10].getY() == yvaluerect) {
+          combat(themobs[10]);
+        }
+      }
     }
     player = up;
     keyClear();
@@ -279,6 +287,9 @@ void toMove() {
   if (keys[1]) {
     blockUpdate();
     if (a == -1 ) {
+      damagedealt = "";
+      damagetaken = "";
+      mobhp = "";
       toMoveX = -50;//left
       if (footstep == 1) {
         left = loadImage("left1.jpg");
@@ -294,13 +305,21 @@ void toMove() {
           combat(themobs[a]);
         }
       }
+      if (level == 10){
+        if (themobs[10].getX() == xvaluerect + 50 && themobs[10].getY() == yvaluerect) {
+          combat(themobs[10]);
+        }
+      }
     }
     player = left;
     keyClear();
   }
   if (keys[2]) {
     blockUpdate();
-    if (s == -1) {    
+    if (s == -1) {  
+      damagedealt = "";
+      damagetaken = "";
+      mobhp = "";  
       toMoveY = 50;//down
       if (footstep == 1) {
         down = loadImage("down1.jpg");
@@ -316,6 +335,11 @@ void toMove() {
           combat(themobs[a]);
         }
       }
+      if (level == 10){
+        if (themobs[10].getX() == xvaluerect + 50 && themobs[10].getY() == yvaluerect) {
+          combat(themobs[10]);
+        }
+      }
     }
     player = down;
     keyClear();
@@ -323,6 +347,9 @@ void toMove() {
   if (keys[3]) {
     blockUpdate();
     if (d == -1) {
+      damagedealt = "";
+      damagetaken = "";
+      mobhp = "";
       toMoveX = 50;//right
       if (footstep == 1) {
         right = loadImage("right1.jpg");
@@ -333,9 +360,15 @@ void toMove() {
       }
     }
     if (d == -65536) {
+      println("trigger");
       for (int a = 0; a < 10; a++) {
         if (themobs[a].getX() == xvaluerect + 50 && themobs[a].getY() == yvaluerect) {
           combat(themobs[a]);
+        }
+      }
+      if (level == 10){
+        if (themobs[10].getX() == xvaluerect + 50 && themobs[10].getY() == yvaluerect) {
+          combat(themobs[10]);
         }
       }
     }
@@ -349,7 +382,7 @@ void combat(Mob a) {
   damagedealt = "";
   damagetaken = "";
   mobhp = "";
-  mobhp +=a.getHP();
+  mobhp += a.getHP();
   int randomly = int(random(100));
   if (chance > randomly) {
     a.setHP(a.getHP() - damage);
@@ -700,7 +733,7 @@ void printitems() {
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
-                fill(0);
+        fill(0);
         text("ATK: " + (2 + int(weapons.get(a).getname())), b - 17, c - 28);
         fill(204, 202, 0);
         imageMode(CENTER);
@@ -885,10 +918,14 @@ void runGame() {
       image(map, 0, 0);
       xvaluerect = 75;
       yvaluerect = 25;
-      themobs = new Mob[10];
+      themobs = new Mob[11];
       for (int a = 0; a < 10; a++) {
         themobs[a] = new Mob();
         randomCords(themobs[a]);
+      }
+      if (level == 10) {
+        themobs[10] = new Mob(925, 675, 200, 15);
+        themobs[10].setmobname("mob5.png");
       }
     }
   } else {
@@ -932,9 +969,22 @@ void runGame() {
     lockon();
     printitems();
     fill(#FF0000);
-    for (int a = 0; a < themobs.length; a++) {
-      if (themobs[a].getHP() > 0) {
-        themobs[a].draw();
+    if (level != 10) {
+      for (int a = 0; a < 10; a++) {
+        if (themobs[a].getHP() > 0) {
+          themobs[a].draw();
+        }
+      }
+    }
+    if (level == 10) {
+      for (int a = 0; a < 10; a++) {
+        if (themobs[a].getHP() > 0) {
+          themobs[a].draw();
+        }
+      }
+      if (themobs[10].getHP() > 0) {
+        themobs[10].getHP();
+        themobs[10].draw();
       }
     }
     modifystats();
