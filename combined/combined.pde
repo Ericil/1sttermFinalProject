@@ -30,6 +30,7 @@ float settingx = 1000;
 float settingy = 350;
 boolean isdown = false;
 boolean isclicked = false;
+boolean intro = false;
 String thechosen = "";
 String thehelmet = "";
 String thearmor = "";
@@ -55,10 +56,11 @@ PImage down;
 PImage left;
 PImage right;
 PImage map;
+int maxHP;
 int playerHP;
 int chance;
 int damage;
-int armor;
+float armor;
 int level;
 String mapname;
 int footstep = 1;
@@ -67,6 +69,7 @@ int Y;
 PImage start;
 PImage dead;
 PImage win;
+PImage introscreen;
 void setup () {
   settingx = 1000;
   settingy = 350;
@@ -74,7 +77,7 @@ void setup () {
   armors = new ArrayList<ArmorClass>(1);
   bootss = new ArrayList<BootsClass>(1);
   weapons = new ArrayList<WeaponClass>(1);
-  size(1250, 850);
+  size(1300, 850);
   background(-1);
   xvaluerect = 75;
   yvaluerect = 25;
@@ -95,7 +98,9 @@ void setup () {
   start = loadImage("startscreen1.jpg");
   dead = loadImage("deadscreen1.jpg");
   win = loadImage("win1.jpg");
+  introscreen = loadImage("intro.png");
   playerHP = 100;
+  maxHP = 100;
   chance = 40;
   armor = 1;
   damage = 2;
@@ -125,15 +130,20 @@ void draw() {
     if (mousePressed) {
       setup();
     }
-  } else
-    if (level == 0) {
-    image(start, 0, 0);
-    if (keyPressed) {
+  } else if (level == 0 && intro == true) {
+    image(introscreen, 0, 0);
+    if (mousePressed) {
       setup();
       level = 1;
       damagedealt = "";
       damagetaken = "";
       mobhp = "";
+      intro = false;
+    }
+  } else if (level == 0 && intro == false) {
+    image(start, 0, 0);
+    if(keyPressed){
+      intro = true;
     }
   } else {
     runGame();
@@ -349,63 +359,64 @@ void combat(Mob a) {
     print("You missed\n");
   }
   randomly = int(random(100));
-  if (randomly > 50 && a.getHP() > 0 && (a.getATK() - armor) > 0) {
-    playerHP = playerHP - (a.getATK() - armor);
+  if (randomly > 50 && a.getHP() > 0) {
+    playerHP = playerHP - int(a.getATK() - (a.getATK()*armor));
     damagetaken = "you have taken " + (a.getATK() - armor) + " points of damage!";
   } else {
     damagetaken = "you have taken no damage!";
     print("Player: " + playerHP + " HP\n");
     print("Enemy: " + a.getHP() + " HP");
-    if (a.getHP() <= 0) {
-      if (chance > 0) {
-        int random1 = int(random(4));
-        if (random1 == 0) {
-          int random2 = int(random(possiblehelms.length));
-          boolean already = false;
-          for (int b = 0; b < helms.size() && already == false; b++){
-            if (helms.get(b).getname() == possiblehelms[random2].getname()){
-              already = true;
-            }
+  }
+  randomly = int(random(100));
+  if (a.getHP() <= 0) {
+    if (randomly > 50) {
+      int random1 = int(random(4));
+      if (random1 == 0) {
+        int random2 = int(random(possiblehelms.length));
+        boolean already = false;
+        for (int b = 0; b < helms.size () && already == false; b++) {
+          if (helms.get(b).getname() == possiblehelms[random2].getname()) {
+            already = true;
           }
-          if (already == false){
+        }
+        if (already == false) {
           helms.add(new HelmetClass(possiblehelms[random2].getname()));
+        }
+      }
+      if (random1 == 1) {
+        int random2 = int(random(possiblearmors.length));
+        boolean already = false;
+        for (int b = 0; b < armors.size () && already == false; b++) {
+          if (armors.get(b).getname() == possiblearmors[random2].getname()) {
+            already = true;
           }
         }
-        if (random1 == 1) {
-          int random2 = int(random(possiblearmors.length));
-          boolean already = false;
-          for (int b = 0; b < armors.size() && already == false; b++){
-            if (armors.get(b).getname() == possiblearmors[random2].getname()){
-              already = true;
-            }
-          }
-          if (already == false){
+        if (already == false) {
           armors.add(new ArmorClass(possiblearmors[random2].getname()));
+        }
+      }
+      if (random1 == 2) {
+        int random2 = int(random(possiblebootss.length));
+        boolean already = false;
+        for (int b = 0; b < bootss.size () && already == false; b++) {
+          if (bootss.get(b).getname() == possiblebootss[random2].getname()) {
+            already = true;
           }
         }
-        if (random1 == 2) {
-          int random2 = int(random(possiblebootss.length));
-          boolean already = false;
-          for (int b = 0; b < bootss.size() && already == false; b++){
-            if (bootss.get(b).getname() == possiblebootss[random2].getname()){
-              already = true;
-            }
-          }
-          if (already == false){
+        if (already == false) {
           bootss.add(new BootsClass(possiblebootss[random2].getname()));
+        }
+      }
+      if (random1 == 3) {
+        int random2 = int (random(possibleweapons.length));
+        boolean already = false;
+        for (int b = 0; b < weapons.size () && already == false; b++) {
+          if (weapons.get(b).getname() == possibleweapons[random2].getname()) {
+            already = true;
           }
         }
-        if (random1 == 3) {
-          int random2 = int (random(possibleweapons.length));
-          boolean already = false;
-          for (int b = 0; b < weapons.size() && already == false; b++){
-            if (weapons.get(b).getname() == possibleweapons[random2].getname()){
-              already = true;
-            }
-          }
-          if (already == false){
+        if (already == false) {
           weapons.add(new WeaponClass(possibleweapons[random2].getname()));
-          }
         }
       }
     }
@@ -464,10 +475,10 @@ void initializeitems() {
     for (int b = 0; b < helms.size (); b++) {
       if (helms.get(b).getbeenset() == false) {
         if (settingx < 1200) {
-          settingx += 50;
+          settingx += 60;
         } else {
-          settingx = 1050;
-          settingy += 50;
+          settingx = 1060;
+          settingy += 70;
         }
         helms.get(b).setx(settingx);
         helms.get(b).sety(settingy);
@@ -479,10 +490,10 @@ void initializeitems() {
     for (int b = 0; b < armors.size (); b++) {
       if (armors.get(b).getbeenset() == false) {
         if (settingx < 1200) {
-          settingx += 50;
+          settingx += 60;
         } else {
-          settingx = 1050;
-          settingy += 50;
+          settingx = 1060;
+          settingy += 70;
         }
         armors.get(b).setx(settingx);
         armors.get(b).sety(settingy);
@@ -494,10 +505,10 @@ void initializeitems() {
     for (int b = 0; b < bootss.size (); b++) {
       if (bootss.get(b).getbeenset() == false) {
         if (settingx < 1200) {
-          settingx += 50;
+          settingx += 60;
         } else {
-          settingx = 1050;
-          settingy += 50;
+          settingx = 1060;
+          settingy += 70;
         }
         bootss.get(b).setx(settingx);
         bootss.get(b).sety(settingy);
@@ -509,10 +520,10 @@ void initializeitems() {
     for (int b = 0; b < weapons.size (); b++) {
       if (weapons.get(b).getbeenset() == false) {
         if (settingx < 1200) {
-          settingx += 50;
+          settingx += 60;
         } else {
-          settingx = 1050;
-          settingy += 50;
+          settingx = 1060;
+          settingy += 70;
         }
         weapons.get(b).setx(settingx);
         weapons.get(b).sety(settingy);
@@ -542,8 +553,8 @@ void printitems() {
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(helms.get(a).getname(), b - 10, c);
+        fill(0);
+        text("MaxHP: " + (100 + int(helms.get(a).getname())*10), b - 28, c - 28);
         fill(204, 202, 0);
         imageMode(CENTER);
         PImage theimage = loadImage("helm" + helms.get(a).getname() + ".png");
@@ -561,8 +572,8 @@ void printitems() {
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(helms.get(a).getname(), b - 10, c);
+        fill(0);
+        text("MaxHP: " + (100 + int(helms.get(a).getname())*10), b - 28, c - 28);
         fill(204, 202, 0);
         isclicked = false;
         imageMode(CENTER);
@@ -591,8 +602,8 @@ void printitems() {
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(armors.get(a).getname(), b - 10, c);
+        fill(0);
+        text("Armor(%): " + int(1 + int(armors.get(a).getname()))*10, b - 30, c - 28);
         fill(204, 202, 0);
         imageMode(CENTER);
         PImage theimage = loadImage("armor" + armors.get(a).getname() + ".png");
@@ -610,8 +621,8 @@ void printitems() {
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(armors.get(a).getname(), b - 10, c);
+        fill(0);
+        text("Armor(%): " + int(1 + int(armors.get(a).getname()))*10, b - 30, c - 28);
         fill(204, 202, 0);
         isclicked = false;
         imageMode(CENTER);
@@ -640,8 +651,8 @@ void printitems() {
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(bootss.get(a).getname(), b - 10, c);
+        fill(0);
+        text("Hit %: " + (45 + int(bootss.get(a).getname())*5), b - 20, c - 28);
         fill(204, 202, 0);
         imageMode(CENTER);
         PImage theimage = loadImage("boots" + bootss.get(a).getname() + ".png");
@@ -659,8 +670,8 @@ void printitems() {
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(bootss.get(a).getname(), b - 10, c);
+        fill(0);
+        text("Hit %: " + (45 + int(bootss.get(a).getname())*5), b - 20, c - 28);
         fill(204, 202, 0);
         isclicked = false;
         imageMode(CENTER);
@@ -689,8 +700,8 @@ void printitems() {
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);
-        fill(0, 102, 153);
-        text(weapons.get(a).getname(), b - 10, c);
+                fill(0);
+        text("ATK: " + (2 + int(weapons.get(a).getname())), b - 17, c - 28);
         fill(204, 202, 0);
         imageMode(CENTER);
         PImage theimage = loadImage("sword" + weapons.get(a).getname() + ".png");
@@ -708,8 +719,8 @@ void printitems() {
         }
         fill(204, 202, 0);
         rect(b, c, 20, 20);  
-        fill(0, 102, 153);
-        text(weapons.get(a).getname(), b - 10, c);
+        fill(0);
+        text("ATK: " + (2 + int(weapons.get(a).getname())), b - 17, c - 28);
         fill(204, 202, 0);
         isclicked = false;
         imageMode(CENTER);
@@ -753,47 +764,41 @@ void randomCords(Mob a) {
   }
 }
 void modifystats() {
-  if (thehelmet.equals("1")) {
-    chance = 45;
-  }
-  if (thehelmet.equals("2")) {
+  if (theboots.equals("1")) {
     chance = 50;
   }
-  if (thehelmet.equals("3")) {
+  if (theboots.equals("2")) {
     chance = 55;
   }
-  if (thehelmet.equals("4")) {
+  if (theboots.equals("3")) {
     chance = 60;
   }
-  if (thehelmet.equals("5")) {
+  if (theboots.equals("4")) {
     chance = 65;
   }
-  if (thehelmet.equals("6")) {
-    chance = 70;
-  }
   if (thearmor.equals("1")) {
-    armor = 3;
+    armor = .2;
   }
   if (thearmor.equals("2")) {
-    armor = 4;
+    armor = .3;
   }
   if (thearmor.equals("3")) {
-    armor = 5;
+    armor = .4;
   }
   if (thearmor.equals("4")) {
-    armor = 6;
+    armor = .5;
   }
   if (thearmor.equals("5")) {
-    armor = 7;
+    armor = .6;
   }
   if (thearmor.equals("6")) {
-    armor = 8;
+    armor = .7;
   }
   if (thearmor.equals("7")) {
-    armor = 9;
+    armor = .8;
   }
   if (thearmor.equals("8")) {
-    armor = 10;
+    armor = .9;
   }
   if (theweapon.equals("1")) {
     damage = 3;
@@ -840,6 +845,24 @@ void modifystats() {
   if (theweapon.equals("15")) {
     damage = 18;
   }
+  if (thehelmet .equals("1")) {
+    maxHP = 110;
+  }
+  if (thehelmet .equals("2")) {
+    maxHP = 120;
+  }
+  if (thehelmet .equals("3")) {
+    maxHP = 130;
+  }
+  if (thehelmet .equals("4")) {
+    maxHP = 140;
+  }
+  if (thehelmet .equals("5")) {
+    maxHP = 150;
+  }
+  if (thehelmet .equals("6")) {
+    maxHP = 160;
+  }
 }
 
 void runGame() {
@@ -853,6 +876,11 @@ void runGame() {
         setup();
       }
     } else {
+      if (playerHP + 10 <= maxHP) {
+        playerHP = playerHP + 10;
+      } else {
+        playerHP = maxHP;
+      }
       map = loadImage(mapname);
       image(map, 0, 0);
       xvaluerect = 75;
@@ -875,15 +903,15 @@ void runGame() {
     image(player, xvaluerect-25, yvaluerect-25);
     rectMode(CORNER);
     fill(90);
-    rect(1000, 0, 250, 750);
+    rect(1000, 0, 300, 750);
     fill(0);
-    rect(0, 750, 1250, 100);
+    rect(0, 750, 1300, 100);
     textSize(15);
     fill(0);
     text("Inventory", 1010, 300);
     fill(-1);
     text("Weapon damage: " + damage, 20, 770);
-    text("Armor: " + armor, 20, 790);
+    text("Armor(%): " + int(armor * 100), 20, 790);
     text("Health: " + playerHP, 20, 810);
     text("Hit chance: " + chance, 20, 830);
     fill(#FF0000);
