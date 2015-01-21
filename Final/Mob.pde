@@ -17,7 +17,7 @@ class Mob {
     hp = HP;
     atk = ATK;
     X = x;
-    Y = x;
+    Y = y;
     mobname = "mob" + Integer.toString(int(random(4) + 1)) + ".png";
   }
   Mob(){

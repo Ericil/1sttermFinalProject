@@ -1,5 +1,20 @@
 1stTermFinalProject
 ===================    
+To run:    
+Open the “Final.pde” file. Run it.    
+
+v.1(Alpha?) 1/21/15    
+Features:    
+-combat system    
+-10 map long game    
+-randomly generated mobs which drop random weapons    
+-a click and drag inventory system    
+-GUI at the bottom displaying your stats and combat results    
+-final boss    
+-start, death, and victory screens    
+Bugs:    
+-sometimes (non-localizable), you are able to get more than 1 item from a mob    
+
 v.092 1/20/15    
 Updates:    
 -GUI for combat    
@@ -10,7 +25,7 @@ Bugs:
 Bugfixes:    
 -items do not stack (you can’t get two of the same items)    
 
-v.091 1/20/15    
+v.09.1 1/20/15    
 Updates:    
 -GUI at the bottom displaying health, armor, damage, and hit chance    
 -the above things are modified by the weapons, helmets, boots, and armors(boots currently does nothing)    
@@ -74,7 +89,7 @@ Updates:
 -Added collision with walls    
 -inventory starting getting set up    
 
-v0.1 1/7/15    
+v0.01 1/7/15    
 Updates:    
 -Added a basic map    
 -Started inventory code with draggable "items"
