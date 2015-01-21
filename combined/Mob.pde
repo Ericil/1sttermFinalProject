@@ -2,7 +2,7 @@ class Mob {
   int X;
   int Y;
   int hp;
-  int atk;
+  float atk;
   boolean spawn = false;
   PImage pic;
   String mobname;
@@ -13,7 +13,7 @@ class Mob {
     return Y;
   }
   
-  Mob(int x, int y, int HP, int ATK) {
+  Mob(int x, int y, int HP, float ATK) {
     hp = HP;
     atk = ATK;
     X = x;
@@ -21,7 +21,7 @@ class Mob {
     mobname = "mob" + Integer.toString(int(random(4) + 1)) + ".png";
   }
   Mob(){
-    this(0, 0, 10, 2);
+    this(0, 0, 15, 3);
     mobname = "mob" + Integer.toString(int(random(4) + 1)) + ".png";
   }
   void draw() {
@@ -34,7 +34,7 @@ class Mob {
   int getHP() {
     return hp;
   }
-  int getATK(){
+  float getATK(){
     return atk;
   }
   void setHP(int x) {
@@ -46,7 +46,7 @@ class Mob {
   void setY(int a){
     Y = a;
   }
-  void setatk(int a){
+  void setatk(float a){
     atk = a;
   }
 }
